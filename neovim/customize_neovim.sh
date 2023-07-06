@@ -47,7 +47,7 @@ readonly PLUGIN_START_DIR="$NVIM_ROOT/pack/myplugins/start"
 readonly PLUGIN_OPT_DIR="$NVIM_ROOT/pack/myplugins/opt"
 readonly NVIM_FTPLUGIN_DIR="$NVIM_ROOT/ftplugin"
 readonly FTPLUGIN_C="$NVIM_FTPLUGIN_DIR/c.vim"
-readonly FTPLUGIN_GIT="$NVIM_FTPLUGIN_DIR/git.vim"
+readonly FTPLUGIN_GIT="$NVIM_FTPLUGIN_DIR/gitcommit.vim"
 readonly FTPLUGIN_JAVASCRIPT="$NVIM_FTPLUGIN_DIR/javascript.vim"
 readonly FTPLUGIN_PYTHON="$NVIM_FTPLUGIN_DIR/python.vim"
 
