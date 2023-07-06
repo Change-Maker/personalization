@@ -109,7 +109,6 @@ declare shell=""
 declare shellconfig=""
 
 # Neovim configuration options.
-auto_switch_cursor_style=false
 navigate_windows_keymapping=false
 navigate_tabs_keymapping=false
 use_rulers=false
@@ -347,11 +346,6 @@ function confirm_nvim_config() {
     echo '[Configuration of Neovim]'
   else
     echo -e "${BNOCOLOR}[Configuration of Neovim]${NOCOLOR}"
-  fi
-
-  if confirm "Would you like to accept Neovim switchs cursor style automatically
-  (line in Insert Mode and block in others)?"; then
-    auto_switch_cursor_style=true
   fi
 
   if confirm "Would you like to navigate between windows (panes) by using Ctrl-[hjkl]?"; then
@@ -795,22 +789,6 @@ function config_nvim_settings() {
   write_nvim_config '    au TextYankPost * silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=150})'
   write_nvim_config 'augroup END'
   write_nvim_config ''
-
-  if [ "$auto_switch_cursor_style" = true ]; then
-    write_nvim_config '""" Use a line cursor within insert mode and a block cursor everywhere else.'
-    write_nvim_config '"""'
-    write_nvim_config '""" Reference chart of values:'
-    write_nvim_config '"""   Ps = 0  -> blinking block.'
-    write_nvim_config '"""   Ps = 1  -> blinking block (default).'
-    write_nvim_config '"""   Ps = 2  -> steady block.'
-    write_nvim_config '"""   Ps = 3  -> blinking underline.'
-    write_nvim_config '"""   Ps = 4  -> steady underline.'
-    write_nvim_config '"""   Ps = 5  -> blinking bar (xterm).'
-    write_nvim_config '"""   Ps = 6  -> steady bar (xterm).'
-    write_nvim_config 'let &t_SI = "\e[6 q"'
-    write_nvim_config 'let &t_EI = "\e[2 q"'
-    write_nvim_config ''
-  fi
 
   write_nvim_config "source $NVIM_KEYMAPPING"
   write_nvim_config "source $PLUGIN_CONFIG"
