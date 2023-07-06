@@ -891,6 +891,7 @@ function config_nvimtree() {
   write_plugin_config '  vim.keymap.set("n", "l", api.node.open.tab_drop, opts("Tab drop"))'
   write_plugin_config '  vim.keymap.set("n", "s", api.node.open.horizontal, opts("Open: Horizontal Split"))'
   write_plugin_config '  vim.keymap.set("n", "v", api.node.open.vertical, opts("Open: Vertical Split"))'
+  write_plugin_config '  vim.keymap.set("n", "?", api.tree.toggle_help, opts("Help"))'
   write_plugin_config 'end'
   write_plugin_config 'require("nvim-tree").setup({'
   write_plugin_config 'disable_netrw = true,'
