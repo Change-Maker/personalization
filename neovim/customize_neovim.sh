@@ -39,10 +39,10 @@ readonly NVIM_RELEASE_URL='https://github.com/neovim/neovim/releases/download/st
 # Neovim folders.
 readonly NVIM_ROOT="$HOME/.config/nvim"
 readonly NVIM_ROOT_BACKUP="$HOME/.config/nvim_backup"
-readonly NVIM_RELEASE_DIR="$NVIM_ROOT/neovim"
+readonly NVIM_RELEASE_DIR='$HOME/.config/nvim/neovim'
 readonly NVIM_CONFIG="$NVIM_ROOT/init.vim"
-readonly NVIM_KEYMAPPING="$NVIM_ROOT/keymappings.lua"
-readonly PLUGIN_CONFIG="$NVIM_ROOT/plugin_settings.lua"
+readonly NVIM_KEYMAPPING='$HOME/.config/nvim/keymappings.lua'
+readonly PLUGIN_CONFIG='$HOME/.config/nvim/plugin_settings.lua'
 readonly PLUGIN_START_DIR="$NVIM_ROOT/pack/myplugins/start"
 readonly PLUGIN_OPT_DIR="$NVIM_ROOT/pack/myplugins/opt"
 readonly NVIM_FTPLUGIN_DIR="$NVIM_ROOT/ftplugin"
@@ -123,7 +123,7 @@ declare -A nvim_plugin=()
 
 
 function show_help() {
-  echo "Usage: ./customize_vim.sh [<opts>]"
+  echo "Usage: ./customize_neovim.sh [<opts>]"
   echo "Options:"
   echo "    -h, --help"
   echo "        Show help messages."
@@ -182,7 +182,6 @@ function confirm() {
   local question="$1"
   while true; do
     if [ "$disable_color" = true ]; then
-      echo
       echo "> $question"
     else
       echo -e "${BNOCOLOR}> $question${NOCOLOR}"
@@ -207,7 +206,6 @@ function confirm_without_default() {
   local question="$1"
   while true; do
     if [ "$disable_color" = true ]; then
-      echo
       echo "> $question"
     else
       echo -e "${BNOCOLOR}> $question${NOCOLOR}"
@@ -268,7 +266,8 @@ function verify_nvim_ppa() {
 
 
 function path_contains_nvim() {
-  if [[ ":$PATH:" == *":$NVIM_RELEASE_DIR/bin:"* ]]; then
+  local release_dir="${NVIM_RELEASE_DIR/'$HOME'/"$HOME"}"
+  if [[ ":$PATH:" == *":$release_dir/bin:"* ]]; then
     return 0
   else
     return 1
@@ -287,10 +286,11 @@ function verify_curl() {
 
 function verify_nvim() {
   # TODO: Verify Neovim version.
+  local release_dir="${NVIM_RELEASE_DIR/'$HOME'/"$HOME"}"
   if ! command -v nvim &> /dev/null; then
     need_installing_nvim=true
   else
-    if path_contains_nvim && [ -f "$NVIM_RELEASE_DIR/bin/nvim" ]; then
+    if path_contains_nvim && [ -f "$release_dir/bin/nvim" ]; then
       need_installing_nvim=true
     fi
   fi
@@ -343,7 +343,12 @@ function confirm_adding_nvim_path() {
 
 function confirm_nvim_config() {
   echo
-  echo -e "${BNOCOLOR}[Configuration of Neovim]${NOCOLOR}"
+  if [ "$disable_color" = true ]; then
+    echo '[Configuration of Neovim]'
+  else
+    echo -e "${BNOCOLOR}[Configuration of Neovim]${NOCOLOR}"
+  fi
+
   if confirm "Would you like to accept Neovim switchs cursor style automatically
   (line in Insert Mode and block in others)?"; then
     auto_switch_cursor_style=true
@@ -376,7 +381,11 @@ function confirm_nvim_config() {
 
 function confirm_nvim_plugin() {
   echo
-  echo -e "${BNOCOLOR}[Neovim Plugins]${NOCOLOR}"
+  if [ "$disable_color" = true ]; then
+    echo '[Neovim Plugins]'
+  else
+    echo -e "${BNOCOLOR}[Neovim Plugins]${NOCOLOR}"
+  fi
 
   if confirm "Would you like to install $ONEDARK - A dark color scheme?"; then
     nvim_plugin["$ONEDARK"]=1
@@ -522,8 +531,8 @@ function confirm_continue() {
   fi
   echo "  - Create configuration files:"
   echo "    - $NVIM_CONFIG"
-  echo "    - $NVIM_KEYMAPPING"
-  echo "    - $PLUGIN_CONFIG"
+  echo "    - ${NVIM_KEYMAPPING/'$HOME'/"$HOME"}"
+  echo "    - ${PLUGIN_CONFIG/'$HOME'/"$HOME"}"
   echo "    - $FTPLUGIN_C"
   echo "    - $FTPLUGIN_GIT"
   echo "    - $FTPLUGIN_JAVASCRIPT"
@@ -532,7 +541,7 @@ function confirm_continue() {
     echo "  - Install Neovim plugins: ${!nvim_plugin[*]}"
   fi
   if [ "$need_adding_nvim_path" = true ]; then
-    echo "  - Add '$NVIM_ROOT' into PATH environment variable."
+    echo "  - Add '$NVIM_RELEASE_DIR/bin' into PATH environment variable."
   fi
 
   if ! confirm_without_default "Would you like to run this customization?"; then
@@ -619,19 +628,21 @@ function backup_nvim_root() {
 
 
 function create_nvim_folders() {
-  mkdir -p "$NVIM_ROOT" "$NVIM_RELEASE_DIR" "$PLUGIN_START_DIR" "$PLUGIN_OPT_DIR" "$NVIM_FTPLUGIN_DIR"
+  local release_dir="${NVIM_RELEASE_DIR/'$HOME'/"$HOME"}"
+  mkdir -p "$NVIM_ROOT" "$release_dir" "$PLUGIN_START_DIR" "$PLUGIN_OPT_DIR" "$NVIM_FTPLUGIN_DIR"
   log "Neovim root folder created: $NVIM_ROOT"
 }
 
 
 function install_nvim_from_github() {
-  cd "$NVIM_RELEASE_DIR"
+  local release_dir="${NVIM_RELEASE_DIR/'$HOME'/"$HOME"}"
+  cd "$release_dir"
   local neovim_targz='neovim.tar.gz'
   curl -LJ "$NVIM_RELEASE_URL" -o "$neovim_targz"
   tar -xzf "$neovim_targz" --strip-components=1
   rm "$neovim_targz"
   if ! path_contains_nvim; then
-    export PATH=$NVIM_RELEASE_DIR/bin:$PATH
+    export PATH="$release_dir/bin:$PATH"
   fi
   log "Neovim installed."
 }
@@ -639,16 +650,16 @@ function install_nvim_from_github() {
 
 function create_configs() {
   touch "$NVIM_CONFIG"
-  touch "$NVIM_KEYMAPPING"
-  touch "$PLUGIN_CONFIG"
+  touch "${NVIM_KEYMAPPING/'$HOME'/"$HOME"}"
+  touch "${PLUGIN_CONFIG/'$HOME'/"$HOME"}"
   touch "$FTPLUGIN_C"
   touch "$FTPLUGIN_GIT"
   touch "$FTPLUGIN_JAVASCRIPT"
   touch "$FTPLUGIN_PYTHON"
   log "Empty configuration files created:
          - $NVIM_CONFIG
-         - $NVIM_KEYMAPPING
-         - $PLUGIN_CONFIG
+         - ${NVIM_KEYMAPPING/'$HOME'/"$HOME"}
+         - ${PLUGIN_CONFIG/'$HOME'/"$HOME"}
          - $FTPLUGIN_C
          - $FTPLUGIN_GIT
          - $FTPLUGIN_JAVASCRIPT
@@ -679,6 +690,7 @@ function config_nvim_settings() {
     write_nvim_config 'colorscheme onedark'
   else
     write_nvim_config 'color desert'
+    write_nvim_config 'hi StatusLine ctermfg=244 ctermbg=236 guifg=#808080 guibg=#303030'
   fi
   write_nvim_config ''
 
@@ -753,6 +765,8 @@ function config_nvim_settings() {
   write_nvim_config ''
 
   write_nvim_config '""" Set the color of the current line number.'
+  write_nvim_config 'set cursorline'
+  write_nvim_config 'hi CursorLine ctermbg=None guibg=None'
   write_nvim_config 'hi CursorLineNr ctermfg=214 guifg=orange'
   write_nvim_config ''
 
@@ -780,6 +794,7 @@ function config_nvim_settings() {
   write_nvim_config '    autocmd!'
   write_nvim_config '    au TextYankPost * silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=150})'
   write_nvim_config 'augroup END'
+  write_nvim_config ''
 
   if [ "$auto_switch_cursor_style" = true ]; then
     write_nvim_config '""" Use a line cursor within insert mode and a block cursor everywhere else.'
@@ -804,7 +819,7 @@ function config_nvim_settings() {
 
 
 function write_nvim_keymapping() {
-  echo "$1" >> "$NVIM_KEYMAPPING"
+  echo "$1" >> "${NVIM_KEYMAPPING/'$HOME'/"$HOME"}"
 }
 
 
@@ -841,20 +856,22 @@ function config_nvim_keymappings() {
     write_nvim_keymapping '  return vim.fn.pumvisible() == 1 and "<C-y>" or "<Tab>"'
     write_nvim_keymapping 'end'
     write_nvim_keymapping 'vim.keymap.set("i", "<Tab>", accept_autocomplete, { expr = true, noremap = true })'
+    write_nvim_keymapping ''
   fi
 
   if [ "$dont_exit_when_indenting" = true ]; then
     write_nvim_keymapping '-- Prevent exiting when indenting.'
     write_nvim_keymapping 'vim.keymap.set("x", "<", "<gv", { silent = true, noremap = true })'
     write_nvim_keymapping 'vim.keymap.set("x", ">", ">gv", { silent = true, noremap = true })'
+    write_nvim_keymapping ''
   fi
 
-  log "Neovim keymapping set up: $NVIM_KEYMAPPING"
+  log "Neovim keymapping set up: ${NVIM_KEYMAPPING/'$HOME'/"$HOME"}"
 }
 
 
 function write_plugin_config() {
-  echo "$1" >> "$PLUGIN_CONFIG"
+  echo "$1" >> "${PLUGIN_CONFIG/'$HOME'/"$HOME"}"
 }
 
 
@@ -1185,7 +1202,7 @@ function config_plugins() {
     config_whichkey
   fi
 
-  log "Neovim plugins' configuration files created: $PLUGIN_CONFIG"
+  log "Neovim plugins' configuration files created: ${PLUGIN_CONFIG/'$HOME'/"$HOME"}"
 }
 
 
@@ -1287,21 +1304,21 @@ function add_nvim_path() {
     "bash")
       echo '' >> "$shellconfig"
       echo '# Neovim' >> "$shellconfig"
-      echo 'command -v nvim &> /dev/null || export PATH='"$NVIM_RELEASE_DIR"'/bin:$PATH' >> "$shellconfig"
+      echo 'command -v nvim &> /dev/null || export PATH="'"$NVIM_RELEASE_DIR"'/bin:$PATH"' >> "$shellconfig"
       msg=(
-        "The following lines are added into $shellconfig:\n"
+        "The following lines are added into $shellconfig:\n\n"
         "        # Neovim\n"
-        '        command -v nvim &> /dev/null || export PATH='"$NVIM_RELEASE_DIR"'/bin:$PATH'
+        '        command -v nvim &> /dev/null || export PATH="'"$NVIM_RELEASE_DIR"'/bin:$PATH"\n'
       )
       ;;
     "zsh")
       echo '' >> "$shellconfig"
       echo '# Neovim' >> "$shellconfig"
-      echo 'command -v nvim &> /dev/null || export PATH='"$NVIM_RELEASE_DIR"'/bin:$PATH' >> "$shellconfig"
+      echo 'command -v nvim &> /dev/null || export PATH="'"$NVIM_RELEASE_DIR"'/bin:$PATH"' >> "$shellconfig"
       msg=(
-        "The following lines are added into $shellconfig:\n"
+        "The following lines are added into $shellconfig:\n\n"
         "        # Neovim\n"
-        '        command -v nvim &> /dev/null || export PATH='"$NVIM_RELEASE_DIR"'/bin:$PATH'
+        '        command -v nvim &> /dev/null || export PATH="'"$NVIM_RELEASE_DIR"'/bin:$PATH"\n'
       )
       ;;
     "fish")
@@ -1313,16 +1330,16 @@ function add_nvim_path() {
       echo '# Neovim' >> "$shellconfig"
       echo 'command -v nvim &> /dev/null || set -gx PATH '"$NVIM_RELEASE_DIR"'/bin $PATH' >> "$shellconfig"
       msg=(
-        "The following lines are added into $shellconfig:\n"
+        "The following lines are added into $shellconfig:\n\n"
         "        # Neovim\n"
-        '        command -v nvim &> /dev/null || set -gx PATH '"$NVIM_RELEASE_DIR"'/bin $PATH'
+        '        command -v nvim &> /dev/null || set -gx PATH '"$NVIM_RELEASE_DIR"'/bin $PATH\n'
       )
       ;;
   esac
   log "${msg[*]}"
 
   msg=(
-    "To apply the changes, open a new terminal or reload your shell by running:\n"
+    "To apply the changes, open a new terminal or reload your shell by running:\n\n"
     "        source $shellconfig\n"
   )
   log "${msg[*]}"
