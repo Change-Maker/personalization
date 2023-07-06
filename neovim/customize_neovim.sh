@@ -862,7 +862,7 @@ function config_better_whitespace() {
 
 function config_lualine() {
   write_plugin_config "-- $LUALINE"
-  write_plugin_config "require(\"$LUALINE\").setup({"
+  write_plugin_config 'require("lualine").setup({'
   write_plugin_config '  options = { theme = "onedark" },'
   write_plugin_config '})'
   write_plugin_config ''
@@ -892,7 +892,7 @@ function config_nvimtree() {
   write_plugin_config '  vim.keymap.set("n", "s", api.node.open.horizontal, opts("Open: Horizontal Split"))'
   write_plugin_config '  vim.keymap.set("n", "v", api.node.open.vertical, opts("Open: Vertical Split"))'
   write_plugin_config 'end'
-  write_plugin_config "require(\"$NVIMTREE\").setup({"
+  write_plugin_config 'require("nvim-tree").setup({'
   write_plugin_config 'disable_netrw = true,'
   write_plugin_config 'git = {'
   write_plugin_config '  ignore = false,'
@@ -977,7 +977,7 @@ function config_nvimtree() {
 
 function config_devicons() {
   write_plugin_config "-- $DEVICONS"
-  write_plugin_config "require(\"$DEVICONS\").setup({ })"
+  write_plugin_config 'require("nvim-web-devicons").setup({ })'
   write_plugin_config ''
 }
 
