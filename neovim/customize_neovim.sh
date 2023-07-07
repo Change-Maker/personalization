@@ -393,7 +393,7 @@ function confirm_nvim_plugin() {
     nvim_plugin["$LUALINE"]=1
   fi
 
-  if confirm "Would you like to install $NVIMTREE - A file explorer tree (requires Neovim 0.8.0+)?"; then
+  if confirm "Would you like to install $NVIMTREE - A file explorer tree?"; then
     nvim_plugin["$NVIMTREE"]=1
 
     local question="> Which side would you like to put the $NVIMTREE window?"
@@ -420,11 +420,11 @@ function confirm_nvim_plugin() {
 
   fi
 
-  if confirm "Would you like to install $DEVICONS - File icons (requires Nerd Fonts 2.3+)?"; then
+  if confirm "Would you like to install $DEVICONS - File icons?"; then
     nvim_plugin["$DEVICONS"]=1
   fi
 
-  if confirm "Would you like to install $BUFFERLINE - A snazzy buffer line (with tabpage integration)?"; then
+  if confirm "Would you like to install $BUFFERLINE - A snazzy buffer line?"; then
     nvim_plugin["$BUFFERLINE"]=1
   fi
 
