@@ -59,7 +59,7 @@ readonly NVIMTREE='nvim-tree'
 readonly DEVICONS='nvim-web-devicons'
 readonly BUFFERLINE='bufferline'
 readonly GITSIGNS='gitsigns'
-readonly INDENT_BLANKLINE='indent-blandline'
+readonly INDENT_BLANKLINE='indent-blankline'
 readonly HOP='hop'
 readonly WHICHKEY='which-key'
 # TODO: The following plugins are not added into customization.
