@@ -36,6 +36,7 @@
 
 - `-h, --help`: Show help messages.
 - `-nc, --no-color`: Disable color on log messages.
+- `-y, --yes`: Accept all customization options.
 
 To show help message:
 
