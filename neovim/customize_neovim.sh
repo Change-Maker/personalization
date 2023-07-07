@@ -101,6 +101,7 @@ declare -rA URL=(
 
 declare disable_color=false
 declare use_sudo=false
+declare accept_all=false
 declare nvim_plugin_installer=""
 declare need_installing_nvim=false
 declare need_installing_spc=false  # spc means software-properties-common.
@@ -128,6 +129,8 @@ function show_help() {
   echo "        Show help messages."
   echo "    -nc, --no-color"
   echo "        Disable color on log messages."
+  echo "    -y, --yes"
+  echo "        Accept all customization options."
   echo
 }
 
@@ -141,6 +144,10 @@ function parse_cli_args() {
         ;;
       "-nc" | "--no-color")
         disable_color=true
+        shift
+        ;;
+      "-y" | "--yes")
+        accept_all=true
         shift
         ;;
       *)
@@ -246,6 +253,7 @@ function confirm_sudo() {
   else
     log "Install dependencies without sudo"
   fi
+  echo
 }
 
 
@@ -301,10 +309,10 @@ function verify_nvim() {
 
 
 function confirm_adding_nvim_path() {
-  if confirm "Would you like to add '$NVIM_RELEASE_DIR/bin' into PATH?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to add '$NVIM_RELEASE_DIR/bin' into PATH?"; then
     need_adding_nvim_path=true
 
-    local question="  Which shell do you use?"
+    local question="> Which shell do you use?"
     while [ -z "$shell" ]; do
       if [ "$disable_color" = true ]; then
         echo $question
@@ -341,59 +349,61 @@ function confirm_adding_nvim_path() {
 
 
 function confirm_nvim_config() {
-  echo
-  if [ "$disable_color" = true ]; then
-    echo '[Configuration of Neovim]'
-  else
-    echo -e "${BNOCOLOR}[Configuration of Neovim]${NOCOLOR}"
+  if [ "$accept_all" = false ]; then
+    if [ "$disable_color" = true ]; then
+      echo '[Configuration of Neovim]'
+    else
+      echo -e "${BNOCOLOR}[Configuration of Neovim]${NOCOLOR}"
+    fi
   fi
 
-  if confirm "Would you like to navigate between windows (panes) by using Ctrl-[hjkl]?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to navigate between windows (panes) by using Ctrl-[hjkl]?"; then
     navigate_windows_keymapping=true
   fi
 
-  if confirm "Would you like to navigate tabs by using Tab and Shift-Tab?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to navigate tabs by using Tab and Shift-Tab?"; then
     navigate_tabs_keymapping=true
   fi
 
-  if confirm "Would you like to use rulers (column guides)?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to use rulers (column guides)?"; then
     use_rulers=true
   fi
 
-  if confirm "Would you like to use the following key mappings for autocomplete menu?
+  if [ "$accept_all" = true ] || confirm "Would you like to use the following key mappings for autocomplete menu?
   - Ctrl-j: open autocomplete menu
   - Ctrl-[jk]: select matches
   - Tab: accept current selected match"; then
     autocomplete_menu_keymapping=true
   fi
 
-  if confirm "Would you like to prevent exiting when indenting?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to prevent exiting when indenting?"; then
     dont_exit_when_indenting=true
   fi
 }
 
 
 function confirm_nvim_plugin() {
-  echo
-  if [ "$disable_color" = true ]; then
-    echo '[Neovim Plugins]'
-  else
-    echo -e "${BNOCOLOR}[Neovim Plugins]${NOCOLOR}"
+  if [ "$accept_all" = false ]; then
+    if [ "$disable_color" = true ]; then
+      echo '[Neovim Plugins]'
+    else
+      echo -e "${BNOCOLOR}[Neovim Plugins]${NOCOLOR}"
+    fi
   fi
 
-  if confirm "Would you like to install $ONEDARK - A dark color scheme?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to install $ONEDARK - A dark color scheme?"; then
     nvim_plugin["$ONEDARK"]=1
   fi
 
-  if confirm "Would you like to install $BETTER_WHITESPACE - Highlight trailing whitespaces?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to install $BETTER_WHITESPACE - Highlight trailing whitespaces?"; then
     nvim_plugin["$BETTER_WHITESPACE"]=1
   fi
 
-  if confirm "Would you like to install $LUALINE - A blazing fast and easy to configure neovim statusline?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to install $LUALINE - A blazing fast and easy to configure neovim statusline?"; then
     nvim_plugin["$LUALINE"]=1
   fi
 
-  if confirm "Would you like to install $NVIMTREE - A file explorer tree?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to install $NVIMTREE - A file explorer tree?"; then
     nvim_plugin["$NVIMTREE"]=1
 
     local question="> Which side would you like to put the $NVIMTREE window?"
@@ -403,7 +413,7 @@ function confirm_nvim_plugin() {
       else
         echo -e "${BNOCOLOR}$question${NOCOLOR}"
       fi
-      read -p "   [l]eft or [r]ight (default: right): " -r answer
+      read -p "  [l]eft or [r]ight (default: right): " -r answer
 
       case "${answer,,}" in  # To lower case.
         "right" | "r" | *[[:blank:]]* | "")
@@ -420,27 +430,27 @@ function confirm_nvim_plugin() {
 
   fi
 
-  if confirm "Would you like to install $DEVICONS - File icons?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to install $DEVICONS - File icons?"; then
     nvim_plugin["$DEVICONS"]=1
   fi
 
-  if confirm "Would you like to install $BUFFERLINE - A snazzy buffer line?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to install $BUFFERLINE - A snazzy buffer line?"; then
     nvim_plugin["$BUFFERLINE"]=1
   fi
 
-  if confirm "Would you like to install $GITSIGNS - Git integration: signs, hunk actions, blame, etc.?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to install $GITSIGNS - Git integration: signs, hunk actions, blame, etc.?"; then
     nvim_plugin["$GITSIGNS"]=1
   fi
 
-  if confirm "Would you like to install $INDENT_BLANKLINE - Indentation guides?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to install $INDENT_BLANKLINE - Indentation guides?"; then
     nvim_plugin["$INDENT_BLANKLINE"]=1
   fi
 
-  if confirm "Would you like to install $HOP - An EasyMotion-like plugin allowing you to jump anywhere in a document?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to install $HOP - An EasyMotion-like plugin allowing you to jump anywhere in a document?"; then
     nvim_plugin["$HOP"]=1
   fi
 
-  if confirm "Would you like to install $WHICHKEY - A popup with possible key bindings of the command you started typing?"; then
+  if [ "$accept_all" = true ] || confirm "Would you like to install $WHICHKEY - A popup with possible key bindings of the command you started typing?"; then
     nvim_plugin["$WHICHKEY"]=1
   fi
 }
@@ -502,8 +512,14 @@ function confirm_nvim_plugin_installer() {
 
 
 function confirm_continue() {
+  local title="This customization will do the following things:"
   echo
-  echo "This customization will do the following things:"
+  if [ "$disable_color" = true ]; then
+    echo "$title"
+  else
+    echo -e "${BNOCOLOR}$title${NOCOLOR}"
+  fi
+
   if [ "$need_installing_spc" = true ]; then
     echo "  - Install the package for adding PPAs: software-properties-common"
   fi
