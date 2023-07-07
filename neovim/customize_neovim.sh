@@ -186,6 +186,12 @@ function log() {
 
 function confirm() {
   local question="$1"
+  local is_required="${2:-false}"
+
+  if [ "$is_required" = false ] && [ "$accept_all" = true ]; then
+    return 0
+  fi
+
   while true; do
     if [ "$disable_color" = true ]; then
       echo "> $question"
@@ -243,7 +249,7 @@ get_latest_release() {
 
 function confirm_sudo() {
   echo
-  if confirm "Would you like to accept using sudo in this customization?"; then
+  if confirm "Would you like to accept using sudo in this customization?" true; then
     if ! command -v sudo &> /dev/null; then
       log "Please install and setup sudo first if you accept using sudo in this customization" "ERROR"
       exit 1
@@ -309,7 +315,7 @@ function verify_nvim() {
 
 
 function confirm_adding_nvim_path() {
-  if [ "$accept_all" = true ] || confirm "Would you like to add '$NVIM_RELEASE_DIR/bin' into PATH?"; then
+  if confirm "Would you like to add '$NVIM_RELEASE_DIR/bin' into PATH?"; then
     need_adding_nvim_path=true
 
     local question="> Which shell do you use?"
@@ -357,26 +363,26 @@ function confirm_nvim_config() {
     fi
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to navigate between windows (panes) by using Ctrl-[hjkl]?"; then
+  if confirm "Would you like to navigate between windows (panes) by using Ctrl-[hjkl]?"; then
     navigate_windows_keymapping=true
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to navigate tabs by using Tab and Shift-Tab?"; then
+  if confirm "Would you like to navigate tabs by using Tab and Shift-Tab?"; then
     navigate_tabs_keymapping=true
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to use rulers (column guides)?"; then
+  if confirm "Would you like to use rulers (column guides)?"; then
     use_rulers=true
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to use the following key mappings for autocomplete menu?
+  if confirm "Would you like to use the following key mappings for autocomplete menu?
   - Ctrl-j: open autocomplete menu
   - Ctrl-[jk]: select matches
   - Tab: accept current selected match"; then
     autocomplete_menu_keymapping=true
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to prevent exiting when indenting?"; then
+  if confirm "Would you like to prevent exiting when indenting?"; then
     dont_exit_when_indenting=true
   fi
 }
@@ -391,19 +397,19 @@ function confirm_nvim_plugin() {
     fi
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to install $ONEDARK - A dark color scheme?"; then
+  if confirm "Would you like to install $ONEDARK - A dark color scheme?"; then
     nvim_plugin["$ONEDARK"]=1
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to install $BETTER_WHITESPACE - Highlight trailing whitespaces?"; then
+  if confirm "Would you like to install $BETTER_WHITESPACE - Highlight trailing whitespaces?"; then
     nvim_plugin["$BETTER_WHITESPACE"]=1
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to install $LUALINE - A blazing fast and easy to configure neovim statusline?"; then
+  if confirm "Would you like to install $LUALINE - A blazing fast and easy to configure neovim statusline?"; then
     nvim_plugin["$LUALINE"]=1
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to install $NVIMTREE - A file explorer tree?"; then
+  if confirm "Would you like to install $NVIMTREE - A file explorer tree?"; then
     nvim_plugin["$NVIMTREE"]=1
 
     local question="> Which side would you like to put the $NVIMTREE window?"
@@ -430,27 +436,27 @@ function confirm_nvim_plugin() {
 
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to install $DEVICONS - File icons?"; then
+  if confirm "Would you like to install $DEVICONS - File icons?"; then
     nvim_plugin["$DEVICONS"]=1
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to install $BUFFERLINE - A snazzy buffer line?"; then
+  if confirm "Would you like to install $BUFFERLINE - A snazzy buffer line?"; then
     nvim_plugin["$BUFFERLINE"]=1
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to install $GITSIGNS - Git integration: signs, hunk actions, blame, etc.?"; then
+  if confirm "Would you like to install $GITSIGNS - Git integration: signs, hunk actions, blame, etc.?"; then
     nvim_plugin["$GITSIGNS"]=1
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to install $INDENT_BLANKLINE - Indentation guides?"; then
+  if confirm "Would you like to install $INDENT_BLANKLINE - Indentation guides?"; then
     nvim_plugin["$INDENT_BLANKLINE"]=1
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to install $HOP - An EasyMotion-like plugin allowing you to jump anywhere in a document?"; then
+  if confirm "Would you like to install $HOP - An EasyMotion-like plugin allowing you to jump anywhere in a document?"; then
     nvim_plugin["$HOP"]=1
   fi
 
-  if [ "$accept_all" = true ] || confirm "Would you like to install $WHICHKEY - A popup with possible key bindings of the command you started typing?"; then
+  if confirm "Would you like to install $WHICHKEY - A popup with possible key bindings of the command you started typing?"; then
     nvim_plugin["$WHICHKEY"]=1
   fi
 }
