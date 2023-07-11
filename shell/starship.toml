@@ -1,0 +1,383 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Inserts a blank line between shell prompts
+add_newline = true
+
+format = """
+(($status)($cmd_duration)\n)\
+[┌(╴$username╶)─](bold green) ($hostname)($docker_context)($container)$directory
+(\
+[│](bold green) \
+($c)\
+($cmake)\
+($python)\
+($nodejs)\
+($git_branch)($git_commit)($git_state)($git_status)\
+($hg_branch)\
+\n)\
+[└╴($jobs)$shell$character](bold green)
+"""
+
+[aws]
+disabled = true
+symbol = "  "
+
+[azure]
+disabled = true
+
+[battery]
+disabled = true
+
+# The buf CLI is a tool for working with Protocol Buffers.
+[buf]
+disabled = true
+symbol = " "
+
+# Bun is a JavaScript runtime.
+[bun]
+disabled = true
+
+[c]
+detect_extensions = ["c", "h", "cc", "cpp", "hh", "hpp"]
+format = '[$symbol$version ]($style)'
+symbol = " "
+
+[character]
+disabled = false
+
+[cmake]
+disabled = false
+
+[cobol]
+disabled = true
+
+[cmd_duration]
+disabled = false
+
+[conda]
+disabled = true
+symbol = " "
+
+[container]
+disabled = false
+style = "blue"
+
+[crystal]
+disabled = true
+
+[daml]
+disabled = true
+
+[dart]
+disabled = true
+symbol = " "
+
+# Deno is a JavaScript runtime.
+[deno]
+disabled = true
+
+[directory]
+before_repo_root_style = "cyan"
+disabled = false
+read_only = " 󰌾"
+repo_root_style = "bold cyan"
+truncate_to_repo = false
+truncation_length = 0
+
+[docker_context]
+disabled = false
+symbol = " "
+
+[dotnet]
+disabled = true
+symbol = "󰪮 "
+
+[elixir]
+disabled = true
+symbol = " "
+
+[elm]
+disabled = true
+symbol = " "
+
+[env_var]
+disabled = true
+
+[erlang]
+disabled = true
+
+[fennel]
+disabled = true
+
+[fill]
+disabled = true
+
+[fossil_branch]
+disabled = true
+symbol = " "
+
+[gcloud]
+disabled = true
+
+[git_branch]
+disabled = false
+format = '[$symbol$branch(:$remote_branch)]($style) '
+symbol = " "
+
+[git_commit]
+disabled = false
+format = '[\($hash$tag\)]($style) '
+tag_disabled = false
+tag_symbol = " "
+
+[git_state]
+disabled = false
+
+[git_metrics]
+disabled = true
+
+[git_status]
+ahead = ""
+behind = ""
+conflicted = "󰦎"
+deleted = "D"
+disabled = false
+diverged = "󰹺"
+renamed = "R"
+
+[golang]
+disabled = true
+symbol = " "
+
+[guix_shell]
+disabled = true
+symbol = " "
+
+[gradle]
+disabled = true
+
+[haskell]
+disabled = true
+symbol = " "
+
+[haxe]
+disabled = true
+symbol = "⌘ "
+
+[helm]
+disabled = true
+
+[hg_branch]
+disabled = true
+symbol = " "
+
+[hostname]
+disabled = false
+ssh_symbol = " "
+
+[java]
+disabled = true
+symbol = " "
+
+[jobs]
+disabled = false
+format = '\[[$symbol$number]($style)\]'
+style = "blue"
+symbol = "󰫢"
+
+[julia]
+disabled = true
+symbol = " "
+
+[kotlin]
+disabled = true
+symbol = "󱈙 "
+
+[kubernetes]
+disabled = true
+
+[line_break]
+disabled = true
+
+[localip]
+disabled = true
+
+[lua]
+disabled = true
+symbol = " "
+
+[memory_usage]
+disabled = true
+symbol = "󰍛 "
+
+[meson]
+disabled = true
+symbol = "󰔷 "
+
+[nim]
+disabled = true
+symbol = "󰆥 "
+
+[nix_shell]
+disabled = true
+symbol = " "
+
+[nodejs]
+detect_extensions = ["jsx", "ts", "tsx", "mjs", "mts", "cjs", "cts"]
+format = '[$symbol$version ]($style)'
+symbol = " "
+
+[ocaml]
+disabled = true
+
+[opa]
+disabled = true
+
+[openstack]
+disabled = true
+
+[os]
+disabled = true
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+OpenCloudOS = "☁️ "
+openEuler = "󰋙 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Windows = "󰍲 "
+
+[package]
+disabled = true
+symbol = "󰏗 "
+
+[perl]
+disabled = true
+
+[php]
+disabled = true
+
+[pijul_channel]
+disabled = true
+
+[pulumi]
+disabled = true
+
+[purescript]
+disabled = true
+
+[python]
+disabled = false
+format = '[$symbol$version (\($virtualenv\) )]($style)'
+symbol = "󰌠 "
+
+[rlang]
+disabled = true
+symbol = "󰟔 "
+
+[raku]
+disabled = true
+
+[red]
+disabled = true
+
+[ruby]
+disabled = true
+symbol = " "
+
+[rust]
+disabled = true
+symbol = " "
+
+[scala]
+disabled = true
+symbol = " "
+
+[shell]
+disabled = false
+format = '[$indicator](green)'
+
+[shlvl]
+disabled = true
+
+[singularity]
+disabled = true
+
+[solidity]
+disabled = true
+
+[spack]
+disabled = true
+symbol = "🅢 "
+
+[status]
+disabled = false
+format = '[($symbol $status )($common_meaning )($signal_name )]($style)'
+map_symbol = true
+not_executable_symbol = "✗"
+not_found_symbol = "✗"
+sigint_symbol = "ϟ"
+symbol = "✗"
+
+[sudo]
+disabled = true
+
+[swift]
+disabled = true
+
+[terraform]
+disabled = true
+
+[time]
+disabled = true
+
+[username]
+disabled = false
+format = '[ $user]($style)'
+
+[vagrant]
+disabled = true
+
+[vlang]
+disabled = true
+
+[vcsh]
+disabled = true
+
+[zig]
+disabled = true
