@@ -35,17 +35,22 @@ readonly BGREEN="\033[1;32m"
 readonly BYELLOW="\033[1;33m"
 readonly BBLUE="\033[1;34m"
 
+declare -xr XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
+declare -xr XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
+declare -xr XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
+
 readonly NVIM_RELEASE_URL='https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz'
 # Neovim folders.
-readonly NVIM_ROOT="$HOME/.config/nvim"
-readonly NVIM_ROOT_BACKUP="$HOME/.config/nvim_backup"
-readonly NVIM_RELEASE_DIR='$HOME/.config/nvim/neovim'
-readonly NVIM_CONFIG="$NVIM_ROOT/init.vim"
-readonly NVIM_KEYMAPPING='$HOME/.config/nvim/keymappings.lua'
-readonly PLUGIN_CONFIG='$HOME/.config/nvim/plugin_settings.lua'
-readonly PLUGIN_START_DIR="$NVIM_ROOT/pack/myplugins/start"
-readonly PLUGIN_OPT_DIR="$NVIM_ROOT/pack/myplugins/opt"
-readonly NVIM_FTPLUGIN_DIR="$NVIM_ROOT/ftplugin"
+readonly NVIM_RELEASE_DIR="$XDG_DATA_HOME/neovim"
+readonly NVIM_RELEASE_BACKUP="$XDG_DATA_HOME/neovim.backup"
+readonly NVIM_CONFIG_DIR="$XDG_CONFIG_HOME/nvim"
+readonly NVIM_CONFIG_BACKUP="$XDG_CONFIG_HOME/nvim.backup"
+readonly NVIM_CONFIG="$NVIM_CONFIG_DIR/init.vim"
+readonly NVIM_KEYMAPPING="$NVIM_CONFIG_DIR/keymappings.lua"
+readonly PLUGIN_CONFIG="$NVIM_CONFIG_DIR/plugin_settings.lua"
+readonly PLUGIN_START_DIR="$NVIM_CONFIG_DIR/pack/myplugins/start"
+readonly PLUGIN_OPT_DIR="$NVIM_CONFIG_DIR/pack/myplugins/opt"
+readonly NVIM_FTPLUGIN_DIR="$NVIM_CONFIG_DIR/ftplugin"
 readonly FTPLUGIN_C="$NVIM_FTPLUGIN_DIR/c.vim"
 readonly FTPLUGIN_GIT="$NVIM_FTPLUGIN_DIR/gitcommit.vim"
 readonly FTPLUGIN_JAVASCRIPT="$NVIM_FTPLUGIN_DIR/javascript.vim"
@@ -279,8 +284,7 @@ function verify_nvim_ppa() {
 
 
 function path_contains_nvim() {
-  local release_dir="${NVIM_RELEASE_DIR/'$HOME'/"$HOME"}"
-  if [[ ":$PATH:" == *":$release_dir/bin:"* ]]; then
+  if [[ ":$PATH:" == *":$NVIM_RELEASE_DIR/bin:"* ]]; then
     return 0
   else
     return 1
@@ -299,11 +303,10 @@ function verify_curl() {
 
 function verify_nvim() {
   # TODO: Verify Neovim version.
-  local release_dir="${NVIM_RELEASE_DIR/'$HOME'/"$HOME"}"
   if ! command -v nvim &> /dev/null; then
     need_installing_nvim=true
   else
-    if path_contains_nvim && [ -f "$release_dir/bin/nvim" ]; then
+    if path_contains_nvim && [ -f "$NVIM_RELEASE_DIR/bin/nvim" ]; then
       need_installing_nvim=true
     fi
   fi
@@ -535,20 +538,29 @@ function confirm_continue() {
   if [ "${#dependency[@]}" -ne 0 ]; then
     echo "  - Install dependencies: ${!dependency[*]}"
   fi
-  if [ -d "$NVIM_ROOT" ] && [ -d "$NVIM_ROOT_BACKUP" ]; then
-    echo "  - Remove Neovim backup folder: rm -rf $NVIM_ROOT_BACKUP"
-  fi
-  if [ -d "$NVIM_ROOT" ]; then
-    echo "  - Backup Neovim root folder: mv $NVIM_ROOT $NVIM_ROOT_BACKUP"
-  fi
-  echo "  - Create folder: $NVIM_ROOT"
+
   if [ "$need_installing_nvim" = true ]; then
+    if [ -d "$NVIM_RELEASE_DIR" ] && [ -d "$NVIM_RELEASE_BACKUP" ]; then
+      echo "  - Remove Neovim release backup folder: rm -rf $NVIM_RELEASE_BACKUP"
+    fi
+    if [ -d "$NVIM_RELEASE_DIR" ]; then
+      echo "  - Backup Neovim release folder: mv $NVIM_RELEASE_DIR $NVIM_RELEASE_BACKUP"
+    fi
+    echo "  - Create Neovim release folder: $NVIM_RELEASE_DIR"
     echo "  - Install Neovim from GitHub release."
   fi
+
+  if [ -d "$NVIM_CONFIG_DIR" ] && [ -d "$NVIM_CONFIG_BACKUP" ]; then
+    echo "  - Remove Neovim config backup folder: rm -rf $NVIM_CONFIG_BACKUP"
+  fi
+  if [ -d "$NVIM_CONFIG_DIR" ]; then
+    echo "  - Backup Neovim config folder: mv $NVIM_CONFIG_DIR $NVIM_CONFIG_BACKUP"
+  fi
+  echo "  - Create Neovim config folder: $NVIM_CONFIG_DIR"
   echo "  - Create configuration files:"
   echo "    - $NVIM_CONFIG"
-  echo "    - ${NVIM_KEYMAPPING/'$HOME'/"$HOME"}"
-  echo "    - ${PLUGIN_CONFIG/'$HOME'/"$HOME"}"
+  echo "    - $NVIM_KEYMAPPING"
+  echo "    - $PLUGIN_CONFIG"
   echo "    - $FTPLUGIN_C"
   echo "    - $FTPLUGIN_GIT"
   echo "    - $FTPLUGIN_JAVASCRIPT"
@@ -631,51 +643,67 @@ function install_dependencies() {
 }
 
 
-function remove_old_backup() {
-  rm -rf "$NVIM_ROOT_BACKUP"
-  log "The old backup removed: rm -rf $NVIM_ROOT_BACKUP"
+function remove_nvim_release_backup() {
+  rm -rf "$NVIM_RELEASE_BACKUP"
+  log "Neovim release backup folder removed: $NVIM_RELEASE_BACKUP"
 }
 
 
-function backup_nvim_root() {
-  mv "$NVIM_ROOT" "$NVIM_ROOT_BACKUP"
-  log "Neovim root folder backed up: mv $NVIM_ROOT $NVIM_ROOT_BACKUP"
+function backup_nvim_release_dir() {
+  mv "$NVIM_RELEASE_DIR" "$NVIM_RELEASE_BACKUP"
+  log "Neovim release folder backed up: $NVIM_RELEASE_DIR -> $NVIM_RELEASE_BACKUP"
 }
 
 
-function create_nvim_folders() {
-  local release_dir="${NVIM_RELEASE_DIR/'$HOME'/"$HOME"}"
-  mkdir -p "$NVIM_ROOT" "$release_dir" "$PLUGIN_START_DIR" "$PLUGIN_OPT_DIR" "$NVIM_FTPLUGIN_DIR"
-  log "Neovim root folder created: $NVIM_ROOT"
+function remove_nvim_config_backup() {
+  rm -rf "$NVIM_CONFIG_BACKUP"
+  log "Neovim config backup folder removed: $NVIM_CONFIG_BACKUP"
+}
+
+
+function backup_nvim_config_dir() {
+  mv "$NVIM_CONFIG_DIR" "$NVIM_CONFIG_BACKUP"
+  log "Neovim config folder backed up: $NVIM_CONFIG_DIR -> $NVIM_CONFIG_BACKUP"
+}
+
+
+function create_nvim_release_dir() {
+  mkdir -p "$NVIM_RELEASE_DIR"
+  log "Neovim release folder created: $NVIM_RELEASE_DIR"
 }
 
 
 function install_nvim_from_github() {
-  local release_dir="${NVIM_RELEASE_DIR/'$HOME'/"$HOME"}"
-  cd "$release_dir"
+  cd "$NVIM_RELEASE_DIR"
   local neovim_targz='neovim.tar.gz'
   curl -LJ "$NVIM_RELEASE_URL" -o "$neovim_targz"
   tar -xzf "$neovim_targz" --strip-components=1
   rm "$neovim_targz"
   if ! path_contains_nvim; then
-    export PATH="$release_dir/bin:$PATH"
+    export PATH="$NVIM_RELEASE_DIR/bin:$PATH"
   fi
   log "Neovim installed."
 }
 
 
+function create_nvim_config_dir() {
+  mkdir -p "$NVIM_CONFIG_DIR" "$PLUGIN_START_DIR" "$PLUGIN_OPT_DIR" "$NVIM_FTPLUGIN_DIR"
+  log "Neovim config folder created: $NVIM_CONFIG_DIR"
+}
+
+
 function create_configs() {
   touch "$NVIM_CONFIG"
-  touch "${NVIM_KEYMAPPING/'$HOME'/"$HOME"}"
-  touch "${PLUGIN_CONFIG/'$HOME'/"$HOME"}"
+  touch "$NVIM_KEYMAPPING"
+  touch "$PLUGIN_CONFIG"
   touch "$FTPLUGIN_C"
   touch "$FTPLUGIN_GIT"
   touch "$FTPLUGIN_JAVASCRIPT"
   touch "$FTPLUGIN_PYTHON"
   log "Empty configuration files created:
          - $NVIM_CONFIG
-         - ${NVIM_KEYMAPPING/'$HOME'/"$HOME"}
-         - ${PLUGIN_CONFIG/'$HOME'/"$HOME"}
+         - $NVIM_KEYMAPPING
+         - $PLUGIN_CONFIG
          - $FTPLUGIN_C
          - $FTPLUGIN_GIT
          - $FTPLUGIN_JAVASCRIPT
@@ -819,7 +847,7 @@ function config_nvim_settings() {
 
 
 function write_nvim_keymapping() {
-  echo "$1" >> "${NVIM_KEYMAPPING/'$HOME'/"$HOME"}"
+  echo "$1" >> "$NVIM_KEYMAPPING"
 }
 
 
@@ -866,12 +894,12 @@ function config_nvim_keymappings() {
     write_nvim_keymapping ''
   fi
 
-  log "Neovim keymapping set up: ${NVIM_KEYMAPPING/'$HOME'/"$HOME"}"
+  log "Neovim keymapping set up: $NVIM_KEYMAPPING"
 }
 
 
 function write_plugin_config() {
-  echo "$1" >> "${PLUGIN_CONFIG/'$HOME'/"$HOME"}"
+  echo "$1" >> "$PLUGIN_CONFIG"
 }
 
 
@@ -1203,7 +1231,7 @@ function config_plugins() {
     config_whichkey
   fi
 
-  log "Neovim plugins' configuration files created: ${PLUGIN_CONFIG/'$HOME'/"$HOME"}"
+  log "Neovim plugins' configuration files created: $PLUGIN_CONFIG"
 }
 
 
@@ -1380,19 +1408,24 @@ function main() {
     install_dependencies
   fi
 
-  if [ -d "$NVIM_ROOT" ] && [ -d "$NVIM_ROOT_BACKUP" ]; then
-    remove_old_backup
-  fi
-
-  if [ -d "$NVIM_ROOT" ]; then
-    backup_nvim_root
-  fi
-
-  create_nvim_folders
   if [ "$need_installing_nvim" = true ]; then
+    if [ -d "$NVIM_RELEASE_DIR" ] && [ -d "$NVIM_RELEASE_BACKUP" ]; then
+      remove_nvim_release_backup
+    fi
+    if [ -d "$NVIM_RELEASE_DIR" ]; then
+      backup_nvim_release_dir
+    fi
+    create_nvim_release_dir
     install_nvim_from_github
   fi
 
+  if [ -d "$NVIM_CONFIG_DIR" ] && [ -d "$NVIM_CONFIG_BACKUP" ]; then
+    remove_nvim_config_backup
+  fi
+  if [ -d "$NVIM_CONFIG_DIR" ]; then
+    backup_nvim_config_dir
+  fi
+  create_nvim_config_dir
   create_configs
   config_nvim_settings
   config_nvim_keymappings
