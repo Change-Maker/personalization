@@ -138,8 +138,8 @@ disabled = false
 disabled = true
 
 [git_status]
-ahead = ""
-behind = ""
+ahead = ""
+behind = ""
 conflicted = "󰦎"
 deleted = "D"
 disabled = false
