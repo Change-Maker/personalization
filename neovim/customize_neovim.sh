@@ -41,8 +41,8 @@ declare -xr XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
 
 readonly NVIM_RELEASE_URL='https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz'
 # Neovim folders.
-readonly NVIM_RELEASE_DIR="$XDG_DATA_HOME/neovim"
-readonly NVIM_RELEASE_BACKUP="$XDG_DATA_HOME/neovim.backup"
+readonly NVIM_RELEASE_DIR="$XDG_DATA_HOME/nvim"
+readonly NVIM_RELEASE_BACKUP="$XDG_DATA_HOME/nvim.backup"
 readonly NVIM_CONFIG_DIR="$XDG_CONFIG_HOME/nvim"
 readonly NVIM_CONFIG_BACKUP="$XDG_CONFIG_HOME/nvim.backup"
 readonly NVIM_CONFIG="$NVIM_CONFIG_DIR/init.vim"
