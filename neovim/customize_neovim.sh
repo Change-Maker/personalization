@@ -57,7 +57,7 @@ readonly FTPLUGIN_JAVASCRIPT="$NVIM_FTPLUGIN_DIR/javascript.vim"
 readonly FTPLUGIN_PYTHON="$NVIM_FTPLUGIN_DIR/python.vim"
 
 # Neovim plugins.
-readonly ONEDARK='onedark'
+readonly KANAGAWA='kanagawa'
 readonly BETTER_WHITESPACE='vim-better-whitespace'
 readonly LUALINE='lualine'
 readonly NVIMTREE='nvim-tree'
@@ -73,7 +73,7 @@ readonly TODO_COMMENTS='todo-comments'
 readonly TOGGLETERM='toggleterm'
 
 declare -rA GIT_URL=(
-  ["$ONEDARK"]='https://github.com/joshdick/onedark.vim.git'
+  ["$KANAGAWA"]='https://github.com/rebelot/kanagawa.nvim'
   ["$BETTER_WHITESPACE"]='https://github.com/ntpeters/vim-better-whitespace.git'
   ["$LUALINE"]='https://github.com/nvim-lualine/lualine.nvim'
   ["$NVIMTREE"]='https://github.com/nvim-tree/nvim-tree.lua'
@@ -89,7 +89,7 @@ declare -rA GIT_URL=(
 )
 
 declare -rA URL=(
-  ["$ONEDARK"]='https://github.com/joshdick/onedark.vim/tarball/main'
+  ["$KANAGAWA"]='https://github.com/rebelot/kanagawa.nvim/tarball/master'
   ["$BETTER_WHITESPACE"]='https://github.com/ntpeters/vim-better-whitespace/tarball/master'
   ["$LUALINE"]='https://github.com/nvim-lualine/lualine.nvim/tarball/master'
   ["$NVIMTREE"]='https://github.com/nvim-tree/nvim-tree.lua/tarball/master'
@@ -400,8 +400,8 @@ function confirm_nvim_plugin() {
     fi
   fi
 
-  if confirm "Would you like to install $ONEDARK - A dark color scheme?"; then
-    nvim_plugin["$ONEDARK"]=1
+  if confirm "Would you like to install $KANAGAWA - A dark color scheme?"; then
+    nvim_plugin["$KANAGAWA"]=1
   fi
 
   if confirm "Would you like to install $BETTER_WHITESPACE - Highlight trailing whitespaces?"; then
@@ -729,9 +729,10 @@ function config_nvim_settings() {
   write_nvim_config "\"\"\" \$VIMRUNTIME is something like '/usr/share/nvim/runtime'."
   write_nvim_config "\"\"\" Run \`:echo \$VIMRUNTIME\` in Neovim to get \$VIMRUNTIME."
   write_nvim_config 'set termguicolors'
-  if [ -n "${nvim_plugin[$ONEDARK]}" ]; then
-    write_nvim_config "packadd! $ONEDARK"
-    write_nvim_config 'colorscheme onedark'
+  if [ -n "${nvim_plugin[$KANAGAWA]}" ]; then
+    write_nvim_config "packadd! $KANAGAWA"
+    write_nvim_config '""" kanagawa comes in three variants: wave, dragon, lotus'
+    write_nvim_config 'colorscheme kanagawa-wave'
   else
     write_nvim_config 'color desert'
     write_nvim_config 'hi StatusLine ctermfg=244 ctermbg=236 guifg=#808080 guibg=#303030'
@@ -796,22 +797,13 @@ function config_nvim_settings() {
   write_nvim_config 'set incsearch'
   write_nvim_config ''
 
-  write_nvim_config '""" Set background color.'
-  write_nvim_config 'hi Normal ctermbg=233 guibg=#121212'
-  write_nvim_config ''
-
-  write_nvim_config '""" Set the color of un-used block which is at the bottom of editor.'
-  write_nvim_config 'hi NonText ctermfg=238 ctermbg=233 guifg=#444444 guibg=#121212'
-  write_nvim_config ''
-
   write_nvim_config '""" Set the color of line numbers.'
-  write_nvim_config 'hi LineNr ctermfg=242 guifg=#6C6C6C'
+  write_nvim_config 'hi LineNr guibg=#1F1F28'
   write_nvim_config ''
 
   write_nvim_config '""" Set the color of the current line number.'
   write_nvim_config 'set cursorline'
   write_nvim_config 'hi CursorLine ctermbg=None guibg=None'
-  write_nvim_config 'hi CursorLineNr ctermfg=214 guifg=orange'
   write_nvim_config ''
 
   write_nvim_config '""" Highlight pair bracket.'
@@ -820,7 +812,7 @@ function config_nvim_settings() {
 
   if [ "$use_rulers" = true ]; then
     write_nvim_config '""" Setup rulers.'
-    write_nvim_config 'hi ColorColumn ctermbg=234 guibg=#1C1C1C'
+    write_nvim_config 'hi ColorColumn ctermbg=234 guibg=#2A2A37'
     write_nvim_config 'let &colorcolumn="101,".join(range(121,999),",")'
     write_nvim_config ''
   fi
@@ -1039,19 +1031,19 @@ function config_bufferline() {
   write_plugin_config 'bufferline.setup({'
   write_plugin_config '  highlights = {'
   write_plugin_config '    fill = {'
-  write_plugin_config '      bg = "#3A3A3A",'
+  write_plugin_config '      bg = "#363646",'
   write_plugin_config '      ctermbg = 237,'
   write_plugin_config '    },'
   write_plugin_config '    separator = {'
-  write_plugin_config '      fg = "#3A3A3A",'
+  write_plugin_config '      fg = "#363646",'
   write_plugin_config '      ctermfg = 237,'
   write_plugin_config '    },'
   write_plugin_config '    separator_selected = {'
-  write_plugin_config '      fg = "#3A3A3A",'
+  write_plugin_config '      fg = "#363646",'
   write_plugin_config '      ctermfg = 237,'
   write_plugin_config '    },'
   write_plugin_config '    separator_visible = {'
-  write_plugin_config '      fg = "#3A3A3A",'
+  write_plugin_config '      fg = "#363646",'
   write_plugin_config '      ctermfg = 237,'
   write_plugin_config '    },'
   write_plugin_config '  },'
@@ -1188,7 +1180,6 @@ function config_whichkey() {
   write_plugin_config '  nowait = true,'
   write_plugin_config '}'
   write_plugin_config 'whichkey.register(wk_mappings, wk_opts)'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "WhichKeyFloat", { ctermbg = 235, bg = "#262626" })'
   write_plugin_config 'vim.opt.timeoutlen = 150'
   write_plugin_config ''
 }
@@ -1290,8 +1281,8 @@ function install_plugin() {
 function install_nvim_plugins() {
   for plugin in "${!nvim_plugin[@]}"; do
     case "$plugin" in
-      "$ONEDARK")
-        install_plugin "$PLUGIN_OPT_DIR" "$ONEDARK" false
+      "$KANAGAWA")
+        install_plugin "$PLUGIN_OPT_DIR" "$KANAGAWA" false
         ;;
       "$BETTER_WHITESPACE")
         install_plugin "$PLUGIN_START_DIR" "$BETTER_WHITESPACE" false
