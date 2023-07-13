@@ -1,8 +1,8 @@
 # Neovim Customization
 
-![overview](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/overview.png)
+![overview](https://user-images.githubusercontent.com/18575008/253169470-79677a68-2a57-488d-a712-1a8751dc7e45.png)
 
-![overview easymotion](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/overview_easymotion.png)
+![overview easymotion](https://user-images.githubusercontent.com/18575008/253169478-ada67f69-c041-4eed-ab50-8edcec9c049b.png)
 
 ## Requirements
 
@@ -126,7 +126,7 @@ A full customization (answer "yes" to every customization options) has the follo
   - Python: 73 and 80~999 columns.
   - Others: 101 and 121~999 columns.
 
-  ![rulers](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/rulers.png)
+  ![rulers](https://user-images.githubusercontent.com/18575008/253169633-7ac8a721-719a-42a1-bbd8-2906d378f22b.png)
 
 - **Popup menu keymappings in Insert mode**
 
@@ -156,7 +156,7 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
   vim.api.nvim_set_hl(0, "ExtraWhitespace", { ctermbg = 88, bg = "#8B0000" })
   ```
 
-  ![vim-better-whitespace](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/vim_better_whitespace.png)
+  ![vim-better-whitespace](https://user-images.githubusercontent.com/18575008/253169661-b8869a54-7639-45c2-a06a-303af1eb9230.png)
 
 - [**lualine**](https://github.com/nvim-lualine/lualine.nvim)
 
@@ -168,7 +168,7 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
   })
   ```
 
-  ![lualine](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/lualine.png)
+  ![lualine](https://user-images.githubusercontent.com/18575008/253169744-0bcf3f50-6232-4570-af46-9dd4f9b0b651.png)
 
 - [**nvim-tree**](https://github.com/nvim-tree/nvim-tree.lua)
 
@@ -189,27 +189,27 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
     - `d`: Delete.
     - `?`: Open NvimTree help window.
 
-  ![nvim-tree](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/nvim_tree.png)
+  ![nvim-tree](https://user-images.githubusercontent.com/18575008/253169773-6b0c1ac0-3723-4f97-857b-553780058667.png)
 
 - [**nvim-web-devicons**](https://github.com/nvim-tree/nvim-web-devicons)
 
   [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) is required.
 
-  ![nvim-web-devicons](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/nvim_web_devicons.png)
+  ![nvim-web-devicons](https://user-images.githubusercontent.com/18575008/253169801-f8004435-28c6-4962-a341-c023de7db5a0.png)
 
 - [**bufferline**](https://github.com/akinsho/bufferline.nvim)
 
   [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) is required.
 
-  ![bufferline](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/bufferline.png)
+  ![bufferline](https://user-images.githubusercontent.com/18575008/253169832-3d8241de-616a-4819-afe8-be283b1e9a71.png)
 
 - [**gitsigns**](https://github.com/lewis6991/gitsigns.nvim)
 
-  ![gitsigns](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/gitsigns.png)
+  ![gitsigns](https://user-images.githubusercontent.com/18575008/253169905-016cb1e9-83a9-4056-90f2-06c1520666df.png)
 
 - [**indent-blankline**](https://github.com/lukas-reineke/indent-blankline.nvim)
 
-  ![indent-blankline](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/indent_blankline.png)
+  ![indent-blankline](https://user-images.githubusercontent.com/18575008/253169929-f94eb789-2608-4b5e-b6ff-a74726a18cde.png)
 
 - [**hop**](https://github.com/phaazon/hop.nvim)
 
@@ -220,13 +220,13 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
   - `<Leader><Leader>S`: Search 2 characters over-windows.
   - `<Leader><Leader>/`: Search N characters.
 
-  ![hop search 2 chars overwin](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/hop.png)
+  ![hop search 2 chars overwin](https://user-images.githubusercontent.com/18575008/253169946-735d6129-aeb6-48b7-abb5-29303750739c.png)
 
 - [**which-key**](https://github.com/folke/which-key.nvim)
 
   Use `<Space>` to trigger which-key menu.
 
-  ![which-key](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/which_key.png)
+  ![which-key](https://user-images.githubusercontent.com/18575008/253169963-ee4c6608-b67f-485d-9122-5770397f187b.png)
 
 ## Known Issues
 
@@ -237,7 +237,7 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
     1. Run `:HopPattern` in Neovim.
     2. Type anything and press `Enter`.
 
-  ![cursorline highlight issuse](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/known_issue_cursorline_hl.png)
+  ![cursorline highlight issuse](https://user-images.githubusercontent.com/18575008/253169995-1077a174-0e89-4494-8a1b-6941d6f1d0ee.png)
 
 - It raise an error if you quit editor without saving when NvimTree is opening.
 
@@ -247,4 +247,4 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
     2. Open NvimTree (run `:NvimTreeOpen`).
     3. Close the file without saving (run `:q`).
 
-  ![nvim-tree auto close issue](https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/images/known_issue_q_without_saving.png)
+  ![nvim-tree auto close issue](https://user-images.githubusercontent.com/18575008/253170006-eaaacaef-3639-4e83-9d1f-bb8ecb5acb0a.png)
