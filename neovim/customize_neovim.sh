@@ -717,6 +717,7 @@ function write_nvim_config() {
 
 
 function config_nvim_settings() {
+  # TODO: Convert vim script into lua.
   if [ -n "${nvim_plugin[$NVIMTREE]}" ]; then
     write_nvim_config '""" Disable netrw.'
     write_nvim_config 'let g:loaded_netrw = 1'
@@ -729,11 +730,7 @@ function config_nvim_settings() {
   write_nvim_config "\"\"\" \$VIMRUNTIME is something like '/usr/share/nvim/runtime'."
   write_nvim_config "\"\"\" Run \`:echo \$VIMRUNTIME\` in Neovim to get \$VIMRUNTIME."
   write_nvim_config 'set termguicolors'
-  if [ -n "${nvim_plugin[$KANAGAWA]}" ]; then
-    write_nvim_config "packadd! $KANAGAWA"
-    write_nvim_config '""" kanagawa comes in three variants: wave, dragon, lotus'
-    write_nvim_config 'colorscheme kanagawa-wave'
-  else
+  if [ -z "${nvim_plugin[$KANAGAWA]}" ]; then
     write_nvim_config 'color desert'
     write_nvim_config 'hi StatusLine ctermfg=244 ctermbg=236 guifg=#808080 guibg=#303030'
   fi
@@ -797,22 +794,12 @@ function config_nvim_settings() {
   write_nvim_config 'set incsearch'
   write_nvim_config ''
 
-  write_nvim_config '""" Set the color of line numbers.'
-  write_nvim_config 'hi LineNr guibg=#1F1F28'
-  write_nvim_config ''
-
-  write_nvim_config '""" Set the color of the current line number.'
-  write_nvim_config 'set cursorline'
-  write_nvim_config 'hi CursorLine ctermbg=None guibg=None'
-  write_nvim_config ''
-
   write_nvim_config '""" Highlight pair bracket.'
   write_nvim_config 'set showmatch'
   write_nvim_config ''
 
   if [ "$use_rulers" = true ]; then
     write_nvim_config '""" Setup rulers.'
-    write_nvim_config 'hi ColorColumn ctermbg=234 guibg=#2A2A37'
     write_nvim_config 'let &colorcolumn="101,".join(range(121,999),",")'
     write_nvim_config ''
   fi
@@ -895,6 +882,37 @@ function write_plugin_config() {
 }
 
 
+function config_colorscheme() {
+  write_plugin_config "-- $KANAGAWA"
+  write_plugin_config 'vim.cmd("packadd! kanagawa")'
+  write_plugin_config 'local kanagawa = require("kanagawa")'
+  write_plugin_config 'local function override_kanagawa(colors)'
+  write_plugin_config '  local theme = colors.theme'
+  write_plugin_config '  return {'
+  write_plugin_config '    Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },  -- add `blend = vim.o.pumblend` to enable transparency'
+  write_plugin_config '    PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },'
+  write_plugin_config '    PmenuSbar = { bg = theme.ui.bg_m1 },'
+  write_plugin_config '    PmenuThumb = { bg = theme.ui.bg_p2 },'
+  write_plugin_config '  }'
+  write_plugin_config 'end'
+  write_plugin_config 'kanagawa.setup({'
+  write_plugin_config '  colors = {'
+  write_plugin_config '    theme = {'
+  write_plugin_config '      all = {'
+  write_plugin_config '        ui = {'
+  write_plugin_config '          bg_gutter = "none",'
+  write_plugin_config '          bg_p2 = "none",'
+  write_plugin_config '        },'
+  write_plugin_config '      },'
+  write_plugin_config '    },'
+  write_plugin_config '  },'
+  write_plugin_config '  overrides = override_kanagawa,'
+  write_plugin_config '})'
+  write_plugin_config 'kanagawa.load("wave")'
+  write_plugin_config ''
+}
+
+
 function config_better_whitespace() {
   write_plugin_config "-- $BETTER_WHITESPACE"
   write_plugin_config 'vim.api.nvim_set_hl(0, "ExtraWhitespace", { ctermbg = 88, bg = "#8B0000" })'
@@ -904,9 +922,7 @@ function config_better_whitespace() {
 
 function config_lualine() {
   write_plugin_config "-- $LUALINE"
-  write_plugin_config 'require("lualine").setup({'
-  write_plugin_config '  options = { theme = "onedark" },'
-  write_plugin_config '})'
+  write_plugin_config 'require("lualine").setup({ })'
   write_plugin_config ''
 }
 
@@ -968,13 +984,6 @@ function config_nvimtree() {
   fi
   write_plugin_config '  },'
   write_plugin_config '})'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "NvimTreeGitNew", { ctermfg = 71, fg = "#C3E88D" })'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "NvimTreeGitStaged", { ctermfg = 178,  fg = "#FFCB6B" })'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "NvimTreeGitDirty", { ctermfg = 68, fg = "#82AAFF" })'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "NvimTreeGitDeleted", { ctermfg = 1, fg = "#F07178" })'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "NvimTreeGitIgnored", { ctermfg = 242, fg = "#6C6C6C" })'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "NvimTreeGitRenamed", { ctermfg = 71, fg = "#C3E88D" })'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "NvimTreeGitMerged", { ctermfg = 98, fg = "#C792EA" })'
   write_plugin_config '-- Close the tab if nvim-tree is the last buffer in the tab (after closing a buffer).'
   write_plugin_config '-- Close vim if nvim-tree is the last buffer (after closing a buffer).'
   write_plugin_config '-- Close nvim-tree across all tabs when one nvim-tree buffer is manually closed if and only if tabs.sync.close is set.'
@@ -1076,12 +1085,6 @@ function config_gitsigns() {
   write_plugin_config '    untracked = { text = "║" },'
   write_plugin_config '  },'
   write_plugin_config '})'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "GitSignsAdd", { ctermfg = 71, fg = "#C3E88D" })'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "GitSignsChange", { ctermfg = 68, fg = "#82AAFF" })'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "GitSignsDelete", { ctermfg = 1, fg = "#F07178" })'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "GitSignsChangedelete", { ctermfg = 98, fg = "#C792EA" })'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "GitSignsTopdelete", { ctermfg = 1, fg = "#F07178" })'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "GitSignsUntracked", { ctermfg = 71, fg = "#C3E88D" })'
   write_plugin_config ''
 }
 
@@ -1186,6 +1189,10 @@ function config_whichkey() {
 
 
 function config_plugins() {
+  if [ -n "${nvim_plugin[$KANAGAWA]}" ]; then
+    config_colorscheme
+  fi
+
   if [ -n "${nvim_plugin[$BETTER_WHITESPACE]}" ]; then
     config_better_whitespace
   fi
