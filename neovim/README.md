@@ -71,7 +71,7 @@ To show help message:
   [y]es or [n]o (default: no): y
 
 [Neovim Plugins]
-> Would you like to install onedark - A dark color scheme?
+> Would you like to install kanagawa - A dark color scheme?
   [y]es or [n]o (default: no): y
 > Would you like to install vim-better-whitespace - Highlight trailing
   whitespaces?
@@ -147,6 +147,10 @@ A full customization (answer "yes" to every customization options) has the follo
 ### Neovim Plugins
 
 The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.lua`.
+
+- [**kanagawa**](https://github.com/rebelot/kanagawa.nvim)
+
+  ![kanagawa_official](https://user-images.githubusercontent.com/36300441/222913073-22b95f11-8c08-4b2b-867c-19072c921de1.png)
 
 - [**vim-better-whitespace**](https://github.com/ntpeters/vim-better-whitespace)
 
