@@ -908,6 +908,7 @@ function config_colorscheme() {
   write_plugin_config '  overrides = override_kanagawa,'
   write_plugin_config '})'
   write_plugin_config 'kanagawa.load("wave")'
+  write_plugin_config 'vim.o.cursorline = true'
   write_plugin_config ''
 }
 
