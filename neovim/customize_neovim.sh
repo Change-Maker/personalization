@@ -793,6 +793,14 @@ function config_nvim_settings() {
   write_nvim_config 'set incsearch'
   write_nvim_config ''
 
+  write_nvim_config '""" Make horizontal split default to below.'
+  write_nvim_config 'set splitbelow'
+  write_nvim_config '""" Make vertical split default to right.'
+  write_nvim_config 'set splitright'
+
+  write_nvim_config '""" Disable word wrap.'
+  write_nvim_config 'set nowrap'
+
   write_nvim_config '""" Highlight pair bracket.'
   write_nvim_config 'set showmatch'
   write_nvim_config ''
