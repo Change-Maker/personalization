@@ -1,8 +1,8 @@
 # Neovim Customization
 
-![overview](https://user-images.githubusercontent.com/18575008/253169470-79677a68-2a57-488d-a712-1a8751dc7e45.png)
+![overview](https://user-images.githubusercontent.com/18575008/253444992-bdba7261-98ff-49e3-b9d7-d4ace6dff1c0.png)
 
-![overview easymotion](https://user-images.githubusercontent.com/18575008/253169478-ada67f69-c041-4eed-ab50-8edcec9c049b.png)
+![overview easymotion](https://user-images.githubusercontent.com/18575008/253445002-db0902a3-4487-472e-b9d8-92087449105c.png)
 
 ## Requirements
 
