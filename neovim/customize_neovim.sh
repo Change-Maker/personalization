@@ -732,7 +732,6 @@ function config_nvim_settings() {
   write_nvim_config 'set termguicolors'
   if [ -z "${nvim_plugin[$KANAGAWA]}" ]; then
     write_nvim_config 'color desert'
-    write_nvim_config 'hi StatusLine ctermfg=244 ctermbg=236 guifg=#808080 guibg=#303030'
   fi
   write_nvim_config ''
 
@@ -1041,19 +1040,15 @@ function config_bufferline() {
   write_plugin_config '  highlights = {'
   write_plugin_config '    fill = {'
   write_plugin_config '      bg = "#363646",'
-  write_plugin_config '      ctermbg = 237,'
   write_plugin_config '    },'
   write_plugin_config '    separator = {'
   write_plugin_config '      fg = "#363646",'
-  write_plugin_config '      ctermfg = 237,'
   write_plugin_config '    },'
   write_plugin_config '    separator_selected = {'
   write_plugin_config '      fg = "#363646",'
-  write_plugin_config '      ctermfg = 237,'
   write_plugin_config '    },'
   write_plugin_config '    separator_visible = {'
   write_plugin_config '      fg = "#363646",'
-  write_plugin_config '      ctermfg = 237,'
   write_plugin_config '    },'
   write_plugin_config '  },'
   write_plugin_config '  options = {'
@@ -1236,16 +1231,12 @@ function config_plugins() {
 function config_ftplugins() {
   if [ "$use_rulers" = true ]; then
     # For cpp.
-    echo 'hi ColorColumn ctermbg=234 guibg=#1C1C1C' >> $FTPLUGIN_C
     echo 'set colorcolumn=121' >> $FTPLUGIN_C
     # For Git.
-    echo 'hi ColorColumn ctermbg=234 guibg=#1C1C1C' >> $FTPLUGIN_GIT
     echo 'let &colorcolumn="51,".join(range(73,999),",")' >> $FTPLUGIN_GIT
     # For JavaScript.
-    echo 'hi ColorColumn ctermbg=234 guibg=#1C1C1C' >> $FTPLUGIN_JAVASCRIPT
     echo 'set colorcolumn=101' >> $FTPLUGIN_JAVASCRIPT
     # For Python.
-    echo 'hi ColorColumn ctermbg=234 guibg=#1C1C1C' >> $FTPLUGIN_PYTHON
     echo 'let &colorcolumn="73,".join(range(80,999),",")' >> $FTPLUGIN_PYTHON
   fi
 
