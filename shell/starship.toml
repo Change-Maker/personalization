@@ -45,6 +45,7 @@ symbol = " "
 
 [character]
 disabled = false
+format = '[$symbol($version )]($style)'
 
 [cmake]
 disabled = false
