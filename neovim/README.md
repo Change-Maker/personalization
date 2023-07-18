@@ -252,3 +252,15 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
     3. Close the file without saving (run `:q`).
 
   ![nvim-tree auto close issue](https://user-images.githubusercontent.com/18575008/253170006-eaaacaef-3639-4e83-9d1f-bb8ecb5acb0a.png)
+
+- It raise an error if run `:HopWordAC` or `:HopWordBC` on a blank line.
+
+  You could check [this issue](https://github.com/phaazon/hop.nvim/issues/361) for more information.
+
+  - Steps to reproduce:
+
+    1. Open a file and move cursor to a blank line.
+    2. Run `:HopWordAC` or `:HopWordBC`. Or press `\\w` or `\\b` key sequences
+      if you are using **hop.nvim** with my configuration.
+
+  ![hop word issue](https://user-images.githubusercontent.com/18575008/254177591-9510c317-f832-4243-a6d4-df6c8bcc7c14.png)
