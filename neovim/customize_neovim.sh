@@ -38,9 +38,11 @@ readonly BBLUE="\033[1;34m"
 declare -xr XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
 declare -xr XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
 declare -xr XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
+declare -xr XDG_BIN_HOME="$HOME/.local/bin"
 
 readonly NVIM_RELEASE_URL='https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz'
 # Neovim folders.
+readonly NVIM_LINKNAME="$XDG_BIN_HOME/nvim"
 readonly NVIM_RELEASE_DIR="$XDG_DATA_HOME/nvim"
 readonly NVIM_RELEASE_BACKUP="$XDG_DATA_HOME/nvim.backup"
 readonly NVIM_CONFIG_DIR="$XDG_CONFIG_HOME/nvim"
@@ -110,7 +112,7 @@ declare accept_all=false
 declare nvim_plugin_installer=""
 declare need_installing_nvim=false
 declare need_installing_spc=false  # spc means software-properties-common.
-declare need_adding_nvim_path=false
+declare need_adding_xdg_bin_path=false
 declare shell=""
 declare shellconfig=""
 
@@ -283,8 +285,17 @@ function verify_nvim_ppa() {
 }
 
 
+function should_add_xdg_bin_path() {
+  if [[ ":$PATH:" == *":$XDG_BIN_HOME:"* ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+
 function path_contains_nvim() {
-  if [[ ":$PATH:" == *":$NVIM_RELEASE_DIR/bin:"* ]]; then
+  if [ -L "$NVIM_LINKNAME" ]; then
     return 0
   else
     return 1
@@ -317,9 +328,9 @@ function verify_nvim() {
 }
 
 
-function confirm_adding_nvim_path() {
-  if confirm "Would you like to add '$NVIM_RELEASE_DIR/bin' into PATH?"; then
-    need_adding_nvim_path=true
+function confirm_adding_xdg_bin_path() {
+  if confirm "Would you like to add '$XDG_BIN_HOME' into PATH?"; then
+    need_adding_xdg_bin_path=true
 
     local question="> Which shell do you use?"
     while [ -z "$shell" ]; do
@@ -344,7 +355,7 @@ function confirm_adding_nvim_path() {
           shellconfig="$HOME/.config/fish/conf.d/nvim.fish"
           ;;
         "q" | "quit")
-          need_adding_nvim_path=false
+          need_adding_xdg_bin_path=false
           return 0
           ;;
         *)
@@ -540,6 +551,9 @@ function confirm_continue() {
   fi
 
   if [ "$need_installing_nvim" = true ]; then
+    if [ ! -d "$XDG_BIN_HOME" ]; then
+      echo "  - Create folder: $XDG_BIN_HOME"
+    fi
     if [ -d "$NVIM_RELEASE_DIR" ] && [ -d "$NVIM_RELEASE_BACKUP" ]; then
       echo "  - Remove Neovim release backup folder: rm -rf $NVIM_RELEASE_BACKUP"
     fi
@@ -548,6 +562,7 @@ function confirm_continue() {
     fi
     echo "  - Create Neovim release folder: $NVIM_RELEASE_DIR"
     echo "  - Install Neovim from GitHub release."
+    echo "  - Create or re-pointing a symbolic link: $NVIM_LINKNAME -> $NVIM_RELEASE_DIR/bin/nvim"
   fi
 
   if [ -d "$NVIM_CONFIG_DIR" ] && [ -d "$NVIM_CONFIG_BACKUP" ]; then
@@ -568,8 +583,9 @@ function confirm_continue() {
   if [ "${#nvim_plugin[@]}" -ne 0 ]; then
     echo "  - Install Neovim plugins: ${!nvim_plugin[*]}"
   fi
-  if [ "$need_adding_nvim_path" = true ]; then
-    echo "  - Add '$NVIM_RELEASE_DIR/bin' into PATH environment variable."
+
+  if [ "$need_adding_xdg_bin_path" = true ]; then
+    echo "  - Add '$XDG_BIN_HOME' into PATH environment variable."
   fi
 
   if ! confirm_without_default "Would you like to run this customization?"; then
@@ -667,6 +683,12 @@ function backup_nvim_config_dir() {
 }
 
 
+function create_xdg_bin_home() {
+  mkdir -p "$XDG_BIN_HOME"
+  log "$XDG_BIN_HOME created."
+}
+
+
 function create_nvim_release_dir() {
   mkdir -p "$NVIM_RELEASE_DIR"
   log "Neovim release folder created: $NVIM_RELEASE_DIR"
@@ -679,9 +701,10 @@ function install_nvim_from_github() {
   curl -LJ "$NVIM_RELEASE_URL" -o "$neovim_targz"
   tar -xzf "$neovim_targz" --strip-components=1
   rm "$neovim_targz"
-  if ! path_contains_nvim; then
-    export PATH="$NVIM_RELEASE_DIR/bin:$PATH"
+  if ! should_add_xdg_bin_path; then
+    export PATH="$XDG_BIN_HOME:$PATH"
   fi
+  ln -sf "$NVIM_RELEASE_DIR/bin/nvim" "$NVIM_LINKNAME"
   log "Neovim installed."
 }
 
@@ -1304,27 +1327,27 @@ function install_nvim_plugins() {
 }
 
 
-function add_nvim_path() {
+function add_xdg_bin_path() {
   local msg=()
   case "$shell" in
     "bash")
       echo '' >> "$shellconfig"
       echo '# Neovim' >> "$shellconfig"
-      echo 'command -v nvim &> /dev/null || export PATH="'"$NVIM_RELEASE_DIR"'/bin:$PATH"' >> "$shellconfig"
+      echo 'command -v nvim &> /dev/null || export PATH="'"$XDG_BIN_HOME"':$PATH"' >> "$shellconfig"
       msg=(
         "The following lines are added into $shellconfig:\n\n"
         "        # Neovim\n"
-        '        command -v nvim &> /dev/null || export PATH="'"$NVIM_RELEASE_DIR"'/bin:$PATH"\n'
+        '        command -v nvim &> /dev/null || export PATH="'"$XDG_BIN_HOME"':$PATH"\n'
       )
       ;;
     "zsh")
       echo '' >> "$shellconfig"
       echo '# Neovim' >> "$shellconfig"
-      echo 'command -v nvim &> /dev/null || export PATH="'"$NVIM_RELEASE_DIR"'/bin:$PATH"' >> "$shellconfig"
+      echo 'command -v nvim &> /dev/null || export PATH="'"$XDG_BIN_HOME"':$PATH"' >> "$shellconfig"
       msg=(
         "The following lines are added into $shellconfig:\n\n"
         "        # Neovim\n"
-        '        command -v nvim &> /dev/null || export PATH="'"$NVIM_RELEASE_DIR"'/bin:$PATH"\n'
+        '        command -v nvim &> /dev/null || export PATH="'"$XDG_BIN_HOME"':$PATH"\n'
       )
       ;;
     "fish")
@@ -1334,11 +1357,11 @@ function add_nvim_path() {
       fi
       echo '' >> "$shellconfig"
       echo '# Neovim' >> "$shellconfig"
-      echo 'command -v nvim &> /dev/null || set -gx PATH '"$NVIM_RELEASE_DIR"'/bin $PATH' >> "$shellconfig"
+      echo 'command -v nvim &> /dev/null || set -gx PATH '"$XDG_BIN_HOME"' $PATH' >> "$shellconfig"
       msg=(
         "The following lines are added into $shellconfig:\n\n"
         "        # Neovim\n"
-        '        command -v nvim &> /dev/null || set -gx PATH '"$NVIM_RELEASE_DIR"'/bin $PATH\n'
+        '        command -v nvim &> /dev/null || set -gx PATH '"$XDG_BIN_HOME"' $PATH\n'
       )
       ;;
   esac
@@ -1356,8 +1379,8 @@ function main() {
   confirm_sudo
   verify_nvim
 
-  if ! path_contains_nvim && [ "$need_installing_nvim" = true ]; then
-    confirm_adding_nvim_path
+  if ! should_add_xdg_bin_path && [ "$need_installing_nvim" = true ]; then
+    confirm_adding_xdg_bin_path
   fi
 
   confirm_nvim_config
@@ -1386,6 +1409,9 @@ function main() {
   fi
 
   if [ "$need_installing_nvim" = true ]; then
+    if [ ! -d "$XDG_BIN_HOME" ]; then
+      create_xdg_bin_home
+    fi
     if [ -d "$NVIM_RELEASE_DIR" ] && [ -d "$NVIM_RELEASE_BACKUP" ]; then
       remove_nvim_release_backup
     fi
@@ -1413,8 +1439,8 @@ function main() {
     install_nvim_plugins
   fi
 
-  if [ "$need_adding_nvim_path" = true ]; then
-    add_nvim_path
+  if [ "$need_adding_xdg_bin_path" = true ]; then
+    add_xdg_bin_path
   fi
 }
 
