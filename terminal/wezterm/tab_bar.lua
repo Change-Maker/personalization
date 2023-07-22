@@ -18,61 +18,102 @@ local function tab_title(tab_info)
 end
 
 local scheme = wezterm.get_builtin_color_schemes()["Tokyo Night"]
-wezterm.on(
-  "format-tab-title",
-  function(tab, tabs, panes, cfg, hover, max_width)
-    local edge_background = scheme.background
-    local background = cfg.colors.tab_bar.inactive_tab.bg_color
-    local foreground = cfg.colors.tab_bar.inactive_tab.fg_color
+local colors = {
+  active = {
+    bg = "#ff9e64",
+    fg = "#1a1b26",
+  },
+  inactive = {
+    bg = "#7aa2f7",
+    fg = "#1a1b26",
+  },
+  separator = "#1a1b26",
+}
 
-    if tab.is_active then
-      background = cfg.colors.tab_bar.active_tab.bg_color
-      foreground = cfg.colors.tab_bar.active_tab.fg_color
-    elseif hover then
-      background = cfg.colors.tab_bar.inactive_tab_hover.bg_color
-      foreground = cfg.colors.tab_bar.inactive_tab_hover.fg_color
-    end
+local function powerline_slant(tab, tabs, panes, cfg, hover, max_width)
+  local edge_bg = colors.separator
+  local bg = colors.inactive.bg
+  local fg = colors.inactive.fg
 
-    local edge_foreground = background
-
-    local title = tab_title(tab)
-
-    if tab.tab_index > 0 then
-      -- ensure that the titles fit in the available space,
-      -- and that we have room for the edges.
-      if #title > max_width then
-        title = wezterm.truncate_right(title, max_width - 5)
-        title = string.format("%s…", title)
-      end
-      return {
-        { Background = { Color = edge_background } },
-        { Foreground = { Color = background } },
-        { Text = wezterm.nerdfonts.ple_lower_right_triangle },
-        { Background = { Color = background } },
-        { Foreground = { Color = foreground } },
-        { Text = " " .. title .. " " },
-        { Background = { Color = edge_background } },
-        { Foreground = { Color = edge_foreground } },
-        { Text = wezterm.nerdfonts.ple_upper_left_triangle },
-      }
-    else
-      -- ensure that the titles fit in the available space,
-      -- and that we have room for the edges.
-      if #title > max_width then
-        title = wezterm.truncate_right(title, max_width - 4)
-        title = string.format("%s…", title)
-      end
-      return {
-        { Background = { Color = background } },
-        { Foreground = { Color = foreground } },
-        { Text = " " .. title .. " " },
-        { Background = { Color = edge_background } },
-        { Foreground = { Color = edge_foreground } },
-        { Text = wezterm.nerdfonts.ple_upper_left_triangle },
-      }
-    end
+  if tab.is_active then
+    bg = colors.active.bg
+    fg = colors.active.fg
   end
-)
+
+  local edge_fg = bg
+
+  local title = tab_title(tab)
+
+  if tab.tab_index > 0 then
+    -- ensure that the titles fit in the available space,
+    -- and that we have room for the edges.
+    if #title > max_width then
+      title = wezterm.truncate_right(title, max_width - 5)
+      title = string.format("%s…", title)
+    end
+    return {
+      { Background = { Color = edge_bg } },
+      { Foreground = { Color = bg } },
+      { Text = wezterm.nerdfonts.ple_lower_right_triangle },
+      { Background = { Color = bg } },
+      { Foreground = { Color = fg } },
+      { Text = " " .. title .. " " },
+      { Background = { Color = edge_bg } },
+      { Foreground = { Color = edge_fg } },
+      { Text = wezterm.nerdfonts.ple_upper_left_triangle },
+    }
+  else
+    -- ensure that the titles fit in the available space,
+    -- and that we have room for the edges.
+    if #title > max_width then
+      title = wezterm.truncate_right(title, max_width - 4)
+      title = string.format("%s…", title)
+    end
+    return {
+      { Background = { Color = bg } },
+      { Foreground = { Color = fg } },
+      { Text = " " .. title .. " " },
+      { Background = { Color = edge_bg } },
+      { Foreground = { Color = edge_fg } },
+      { Text = wezterm.nerdfonts.ple_upper_left_triangle },
+    }
+  end
+end
+
+local function flexbox(tab, tabs, panes, cfg, hover, max_width)
+  local edge_fg = colors.separator
+  local bg = colors.inactive.bg
+  local fg = colors.inactive.fg
+
+  if tab.is_active then
+    bg = colors.active.bg
+    fg = colors.active.fg
+  end
+
+  local edge_bg = bg
+
+  local title = tab_title(tab)
+  -- ensure that the titles fit in the available space,
+  -- and that we have room for the edges.
+  if #title > max_width then
+    title = wezterm.truncate_right(title, max_width - 3)
+    title = string.format("%s…", title)
+  end
+
+  return {
+    { Background = { Color = edge_bg } },
+    { Foreground = { Color = edge_fg } },
+    { Text = "▏" },
+    { Background = { Color = bg } },
+    { Foreground = { Color = fg } },
+    { Text = title },
+    { Background = { Color = edge_bg } },
+    { Foreground = { Color = edge_fg } },
+    { Text = "▕" }
+  }
+end
+
+wezterm.on("format-tab-title", flexbox)
 
 -- define a function in the module table.
 -- Only functions defined in `module` will be exported to

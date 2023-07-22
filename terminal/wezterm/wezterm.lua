@@ -50,23 +50,6 @@ end
 config.launch_menu = launch_menu
 
 config.color_scheme = "Tokyo Night"
-config.colors = {
-  tab_bar = {
-    active_tab = {
-      bg_color = "#7aa2f7",
-      fg_color = "#16161e",
-    },
-    inactive_tab = {
-      bg_color = "#292e42",
-      fg_color = "#545c7e",
-    },
-    inactive_tab_hover = {
-      bg_color = "#292e42",
-      fg_color = "#7aa2f7",
-    },
-  },
-}
-
 config.force_reverse_video_cursor = true
 
 config.font = wezterm.font {
