@@ -43,7 +43,7 @@ local function powerline_slant(tab, tabs, panes, cfg, hover, max_width)
   local edge_fg = bg
 
   local title = tab_title(tab)
-  title = " " .. title .. " "
+  title = " "..title.." "
 
   if tab.tab_index > 0 then
     -- ensure that the titles fit in the available space,
@@ -94,7 +94,7 @@ local function flexbox_left_sep(tab, tabs, panes, cfg, hover, max_width)
   local edge_bg = bg
 
   local title = tab_title(tab)
-  title = title .. " "
+  title = title.." "
   -- ensure that the titles fit in the available space,
   -- and that we have room for the edges.
   if #title > max_width then
@@ -125,7 +125,7 @@ local function flexbox_right_sep(tab, tabs, panes, cfg, hover, max_width)
   local edge_bg = bg
 
   local title = tab_title(tab)
-  title = " " .. title
+  title = " "..title
   -- ensure that the titles fit in the available space,
   -- and that we have room for the edges.
   if #title > max_width then
