@@ -43,13 +43,14 @@ local function powerline_slant(tab, tabs, panes, cfg, hover, max_width)
   local edge_fg = bg
 
   local title = tab_title(tab)
+  title = " " .. title .. " "
 
   if tab.tab_index > 0 then
     -- ensure that the titles fit in the available space,
     -- and that we have room for the edges.
     if #title > max_width then
-      title = wezterm.truncate_right(title, max_width - 5)
-      title = string.format("%s…", title)
+      title = wezterm.truncate_right(title, max_width - 4)
+      title = string.format("%s… ", title)
     end
     return {
       { Background = { Color = edge_bg } },
@@ -57,7 +58,7 @@ local function powerline_slant(tab, tabs, panes, cfg, hover, max_width)
       { Text = wezterm.nerdfonts.ple_lower_right_triangle },
       { Background = { Color = bg } },
       { Foreground = { Color = fg } },
-      { Text = " " .. title .. " " },
+      { Text = title },
       { Background = { Color = edge_bg } },
       { Foreground = { Color = edge_fg } },
       { Text = wezterm.nerdfonts.ple_upper_left_triangle },
@@ -66,13 +67,13 @@ local function powerline_slant(tab, tabs, panes, cfg, hover, max_width)
     -- ensure that the titles fit in the available space,
     -- and that we have room for the edges.
     if #title > max_width then
-      title = wezterm.truncate_right(title, max_width - 4)
-      title = string.format("%s…", title)
+      title = wezterm.truncate_right(title, max_width - 3)
+      title = string.format("%s… ", title)
     end
     return {
       { Background = { Color = bg } },
       { Foreground = { Color = fg } },
-      { Text = " " .. title .. " " },
+      { Text = title },
       { Background = { Color = edge_bg } },
       { Foreground = { Color = edge_fg } },
       { Text = wezterm.nerdfonts.ple_upper_left_triangle },
@@ -80,7 +81,7 @@ local function powerline_slant(tab, tabs, panes, cfg, hover, max_width)
   end
 end
 
-local function flexbox(tab, tabs, panes, cfg, hover, max_width)
+local function flexbox_left_sep(tab, tabs, panes, cfg, hover, max_width)
   local edge_fg = colors.separator
   local bg = colors.inactive.bg
   local fg = colors.inactive.fg
@@ -93,11 +94,12 @@ local function flexbox(tab, tabs, panes, cfg, hover, max_width)
   local edge_bg = bg
 
   local title = tab_title(tab)
+  title = title .. " "
   -- ensure that the titles fit in the available space,
   -- and that we have room for the edges.
   if #title > max_width then
     title = wezterm.truncate_right(title, max_width - 3)
-    title = string.format("%s…", title)
+    title = string.format("%s… ", title)
   end
 
   return {
@@ -107,13 +109,42 @@ local function flexbox(tab, tabs, panes, cfg, hover, max_width)
     { Background = { Color = bg } },
     { Foreground = { Color = fg } },
     { Text = title },
-    { Background = { Color = edge_bg } },
-    { Foreground = { Color = edge_fg } },
-    { Text = "▕" }
   }
 end
 
-wezterm.on("format-tab-title", flexbox)
+local function flexbox_right_sep(tab, tabs, panes, cfg, hover, max_width)
+  local edge_fg = colors.separator
+  local bg = colors.inactive.bg
+  local fg = colors.inactive.fg
+
+  if tab.is_active then
+    bg = colors.active.bg
+    fg = colors.active.fg
+  end
+
+  local edge_bg = bg
+
+  local title = tab_title(tab)
+  title = " " .. title
+  -- ensure that the titles fit in the available space,
+  -- and that we have room for the edges.
+  if #title > max_width then
+    title = title:sub(2, -1)
+    title = wezterm.truncate_right(title, max_width - 3)
+    title = string.format(" %s…", title)
+  end
+
+  return {
+    { Background = { Color = bg } },
+    { Foreground = { Color = fg } },
+    { Text = title },
+    { Background = { Color = edge_bg } },
+    { Foreground = { Color = edge_fg } },
+    { Text = "▕" },
+  }
+end
+
+wezterm.on("format-tab-title", flexbox_left_sep)
 
 -- define a function in the module table.
 -- Only functions defined in `module` will be exported to
