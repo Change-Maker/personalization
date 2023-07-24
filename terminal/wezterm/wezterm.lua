@@ -55,6 +55,7 @@ config.launch_menu = launch_menu
 config.color_scheme = "Tokyo Night"
 config.colors = {
   selection_fg = "none",
+  split = "#7aa2f7",
 }
 config.force_reverse_video_cursor = true
 
