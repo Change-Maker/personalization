@@ -3,7 +3,7 @@ local act = wezterm.action
 local module = {}
 
 local keybindings = {
-  -- Tab bar management.
+  -- Tabs management.
   {
     key = "T",
     mods = "CTRL|SHIFT",
@@ -74,7 +74,7 @@ local keybindings = {
     mods = "CTRL|SHIFT",
     action = act.CloseCurrentTab { confirm = true },
   },
-  -- Pane managment.
+  -- Panes managment.
   {
     key = "F6",
     mods = "CTRL",
