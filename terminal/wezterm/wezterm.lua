@@ -8,6 +8,10 @@ if wezterm.config_builder then
 end
 
 config.audible_bell = "Disabled"
+config.inactive_pane_hsb = {
+  saturation = 1,
+  brightness = 0.6,
+}
 launch_menu = {}
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
