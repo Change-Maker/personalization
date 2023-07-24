@@ -5,10 +5,10 @@ local module = {}
 local keybindings = {
   -- Tab bar management.
   {
-    key = "t",
+    key = "T",
     mods = "CTRL|SHIFT",
     action = act.SpawnCommandInNewTab {
-      domain = "DefaultDomain",
+      domain = "CurrentPaneDomain",
       cwd = wezterm.home_dir,
     },
   },
@@ -87,7 +87,7 @@ local keybindings = {
     },
   },
   {
-    key = "q",
+    key = "Q",
     mods = "CTRL|SHIFT",
     action = act.CloseCurrentTab { confirm = true },
   },
@@ -213,7 +213,68 @@ local keybindings = {
     key = "N",
     mods = "CTRL|SHIFT",
     action = act.ShowLauncher,
-  }
+  },
+  -- Scrollback.
+  {
+    key = "Y",
+    mods = "CTRL|SHIFT",
+    action = act.ScrollByLine(-1),
+  },
+  {
+    key = "UpArrow",
+    mods = "CTRL|SHIFT",
+    action = act.ScrollByLine(-1),
+  },
+  {
+    key = "E",
+    mods = "CTRL|SHIFT",
+    action = act.ScrollByLine(1),
+  },
+  {
+    key = "DownArrow",
+    mods = "CTRL|SHIFT",
+    action = act.ScrollByLine(1),
+  },
+  {
+    key = "U",
+    mods = "CTRL|SHIFT",
+    action = act.ScrollByPage(-0.5),
+  },
+  {
+    key = "D",
+    mods = "CTRL|SHIFT",
+    action = act.ScrollByPage(0.5),
+  },
+  {
+    key = "PageUp",
+    mods = "SHIFT",
+    action = act.ScrollByPage(-1),
+  },
+  {
+    key = "PageDown",
+    mods = "SHIFT",
+    action = act.ScrollByPage(1),
+  },
+  {
+    key = "Home",
+    mods = "SHIFT",
+    action = act.ScrollToTop,
+  },
+  {
+    key = "End",
+    mods = "SHIFT",
+    action = act.ScrollToBottom,
+  },
+  {
+    key = "UpArrow",
+    mods = "CTRL",
+    action = act.ScrollToPrompt(-1),
+  },
+  {
+    key = "DownArrow",
+    mods = "CTRL",
+    action = act.ScrollToPrompt(1),
+  },
 }
 
 -- define a function in the module table.
