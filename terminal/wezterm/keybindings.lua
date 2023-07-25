@@ -119,22 +119,22 @@ local keybindings = {
   },
   {
     key = "UpArrow",
-    mods = "CTRL|SHIFT",
+    mods = "ALT|SHIFT",
     action = act.AdjustPaneSize { "Up", 1 },
   },
   {
     key = "RightArrow",
-    mods = "CTRL|SHIFT",
+    mods = "ALT|SHIFT",
     action = act.AdjustPaneSize { "Right", 1 },
   },
   {
     key = "DownArrow",
-    mods = "CTRL|SHIFT",
+    mods = "ALT|SHIFT",
     action = act.AdjustPaneSize { "Down", 1 },
   },
   {
     key = "LeftArrow",
-    mods = "CTRL|SHIFT",
+    mods = "ALT|SHIFT",
     action = act.AdjustPaneSize { "Left", 1 },
   },
   {
