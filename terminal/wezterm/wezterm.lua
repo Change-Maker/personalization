@@ -8,6 +8,7 @@ if wezterm.config_builder then
 end
 
 config.audible_bell = "Disabled"
+config.window_decorations = "RESIZE"
 config.inactive_pane_hsb = {
   saturation = 1,
   brightness = 0.6,

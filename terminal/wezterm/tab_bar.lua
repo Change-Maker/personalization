@@ -7,14 +7,18 @@ local module = {}
 -- or `wezterm cli set-tab-title`, but falls back to the
 -- title of the active pane in that tab.
 local function tab_title(tab_info)
+  local zoomed = ""
+  if tab_info.active_pane.is_zoomed then
+    zoomed = "[Z] "
+  end
   local title = tab_info.tab_title
   -- if the tab title is explicitly set, take that
   if title and #title > 0 then
-    return title
+    return zoomed..title
   end
   -- Otherwise, use the title from the active pane
   -- in that tab
-  return tab_info.active_pane.title
+  return zoomed..tab_info.active_pane.title
 end
 
 local scheme = wezterm.get_builtin_color_schemes()["Tokyo Night"]
