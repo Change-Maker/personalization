@@ -1,6 +1,7 @@
-local wezterm = require "wezterm"
+local wezterm = require("wezterm")
 local act = wezterm.action
-local module = {}
+
+local M = {}
 
 local keybindings = {
   -- Tabs management.
@@ -72,124 +73,124 @@ local keybindings = {
   {
     key = "Q",
     mods = "CTRL|SHIFT",
-    action = act.CloseCurrentTab { confirm = true },
+    action = act.CloseCurrentTab({ confirm = true }),
   },
   -- Panes managment.
   {
     key = "F6",
     mods = "CTRL",
-    action = act.CloseCurrentPane { confirm = true },
+    action = act.CloseCurrentPane({ confirm = true }),
   },
   {
     key = "W",
     mods = "CTRL|SHIFT",
-    action = act.CloseCurrentPane { confirm = true },
+    action = act.CloseCurrentPane({ confirm = true }),
   },
   {
     key = "F2",
     mods = "SHIFT",
-    action = act.SplitPane {
+    action = act.SplitPane({
       command = { domain = "DefaultDomain" },
       direction = "Down",
-    },
+    }),
   },
   {
     key = "Enter",
     mods = "CTRL|SHIFT",
-    action = act.SplitPane {
+    action = act.SplitPane({
       command = { domain = "CurrentPaneDomain" },
       direction = "Down",
-    },
+    }),
   },
   {
     key = "F2",
     mods = "CTRL",
-    action = act.SplitPane {
+    action = act.SplitPane({
       command = { domain = "DefaultDomain" },
       direction = "Right",
-    },
+    }),
   },
   {
     key = "|",
     mods = "CTRL|SHIFT",
-    action = act.SplitPane {
+    action = act.SplitPane({
       command = { domain = "CurrentPaneDomain" },
       direction = "Right",
-    },
+    }),
   },
   {
     key = "UpArrow",
     mods = "ALT|SHIFT",
-    action = act.AdjustPaneSize { "Up", 1 },
+    action = act.AdjustPaneSize({ "Up", 1 }),
   },
   {
     key = "RightArrow",
     mods = "ALT|SHIFT",
-    action = act.AdjustPaneSize { "Right", 1 },
+    action = act.AdjustPaneSize({ "Right", 1 }),
   },
   {
     key = "DownArrow",
     mods = "ALT|SHIFT",
-    action = act.AdjustPaneSize { "Down", 1 },
+    action = act.AdjustPaneSize({ "Down", 1 }),
   },
   {
     key = "LeftArrow",
     mods = "ALT|SHIFT",
-    action = act.AdjustPaneSize { "Left", 1 },
+    action = act.AdjustPaneSize({ "Left", 1 }),
   },
   {
     key = "UpArrow",
     mods = "SHIFT",
-    action = act.ActivatePaneDirection "Up",
+    action = act.ActivatePaneDirection("Up"),
   },
   {
     key = "K",
     mods = "CTRL|SHIFT",
-    action = act.ActivatePaneDirection "Up",
+    action = act.ActivatePaneDirection("Up"),
   },
   {
     key = "RightArrow",
     mods = "SHIFT",
-    action = act.ActivatePaneDirection "Right",
+    action = act.ActivatePaneDirection("Right"),
   },
   {
     key = "L",
     mods = "CTRL|SHIFT",
-    action = act.ActivatePaneDirection "Right",
+    action = act.ActivatePaneDirection("Right"),
   },
   {
     key = "DownArrow",
     mods = "SHIFT",
-    action = act.ActivatePaneDirection "Down",
+    action = act.ActivatePaneDirection("Down"),
   },
   {
     key = "J",
     mods = "CTRL|SHIFT",
-    action = act.ActivatePaneDirection "Down",
+    action = act.ActivatePaneDirection("Down"),
   },
   {
     key = "LeftArrow",
     mods = "SHIFT",
-    action = act.ActivatePaneDirection "Left",
+    action = act.ActivatePaneDirection("Left"),
   },
   {
     key = "H",
     mods = "CTRL|SHIFT",
-    action = act.ActivatePaneDirection "Left",
+    action = act.ActivatePaneDirection("Left"),
   },
   {
     key = "F7",
     mods = "CTRL|SHIFT",
-    action = act.PaneSelect {
+    action = act.PaneSelect({
       alphabet = "abcdefghijklmnopqrstuvwxyz",
-    },
+    }),
   },
   {
     key = "F8",
     mods = "CTRL|SHIFT",
-    action = act.PaneSelect {
+    action = act.PaneSelect({
       mode = "SwapWithActive",
-    },
+    }),
   },
   {
     key = "Z",
@@ -264,15 +265,8 @@ local keybindings = {
   },
 }
 
--- define a function in the module table.
--- Only functions defined in `module` will be exported to
--- code that imports this module.
--- The suggested convention for making modules that update
--- the config is for them to export an `apply_to_config`
--- function that accepts the config object, like this:
-function module.apply_to_config(config)
+function M.apply_to_config(config)
   config.keys = keybindings
 end
 
--- return our module table
-return module
+return M

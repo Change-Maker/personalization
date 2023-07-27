@@ -1,6 +1,7 @@
-local wezterm = require "wezterm"
+local wezterm = require("wezterm")
 local act = wezterm.action
-local module = {}
+
+local M = {}
 
 -- This function returns the suggested title for a tab.
 -- It prefers the title that was set via `tab:set_title()`
@@ -99,6 +100,7 @@ local function flexbox_left_sep(tab, tabs, panes, cfg, hover, max_width)
 
   local title = tab_title(tab)
   title = title.." "
+
   -- ensure that the titles fit in the available space,
   -- and that we have room for the edges.
   if #title > max_width then
@@ -130,6 +132,7 @@ local function flexbox_right_sep(tab, tabs, panes, cfg, hover, max_width)
 
   local title = tab_title(tab)
   title = " "..title
+
   -- ensure that the titles fit in the available space,
   -- and that we have room for the edges.
   if #title > max_width then
@@ -150,19 +153,12 @@ end
 
 wezterm.on("format-tab-title", flexbox_left_sep)
 
--- define a function in the module table.
--- Only functions defined in `module` will be exported to
--- code that imports this module.
--- The suggested convention for making modules that update
--- the config is for them to export an `apply_to_config`
--- function that accepts the config object, like this:
-function module.apply_to_config(config)
+function M.apply_to_config(config)
+  config.show_new_tab_button_in_tab_bar = false
   config.show_tab_index_in_tab_bar = false
   config.tab_max_width = 100
   config.tab_bar_at_bottom = true
   config.use_fancy_tab_bar = false
-  config.show_new_tab_button_in_tab_bar = false
 end
 
--- return our module table
-return module
+return M
