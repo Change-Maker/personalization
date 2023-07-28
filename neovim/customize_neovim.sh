@@ -1301,7 +1301,6 @@ function config_ftplugins() {
 function install_plugin() {
   local pack_dir="$1"
   local plugin_name="$2"
-  local add_helptags="$3"
 
   cd "$pack_dir"
   case "$nvim_plugin_installer" in
@@ -1322,8 +1321,7 @@ function install_plugin() {
       ;;
   esac
 
-  # TODO: Make adding helptags automatically by verifying if "doc" folder exists.
-  if [ "$add_helptags" = true ]; then
+  if [ -d "$pack_dir/$plugin_name/doc" ]; then
     nvim -u NONE --headless --cmd "helptags $pack_dir/$plugin_name/doc" +q
   fi
 }
@@ -1333,37 +1331,37 @@ function install_nvim_plugins() {
   for plugin in "${!nvim_plugin[@]}"; do
     case "$plugin" in
       "$KANAGAWA")
-        install_plugin "$PLUGIN_OPT_DIR" "$KANAGAWA" false
+        install_plugin "$PLUGIN_OPT_DIR" "$KANAGAWA"
         ;;
       "$BETTER_WHITESPACE")
-        install_plugin "$PLUGIN_START_DIR" "$BETTER_WHITESPACE" false
+        install_plugin "$PLUGIN_START_DIR" "$BETTER_WHITESPACE"
         ;;
       "$LUALINE")
-        install_plugin "$PLUGIN_START_DIR" "$LUALINE" false
+        install_plugin "$PLUGIN_START_DIR" "$LUALINE"
         ;;
       "$NVIMTREE")
-        install_plugin "$PLUGIN_START_DIR" "$NVIMTREE" true
+        install_plugin "$PLUGIN_START_DIR" "$NVIMTREE"
         ;;
       "$DEVICONS")
-        install_plugin "$PLUGIN_START_DIR" "$DEVICONS" false
+        install_plugin "$PLUGIN_START_DIR" "$DEVICONS"
         ;;
       "$BUFFERLINE")
-        install_plugin "$PLUGIN_START_DIR" "$BUFFERLINE" true
+        install_plugin "$PLUGIN_START_DIR" "$BUFFERLINE"
         ;;
       "$GITSIGNS")
-        install_plugin "$PLUGIN_START_DIR" "$GITSIGNS" true
+        install_plugin "$PLUGIN_START_DIR" "$GITSIGNS"
         ;;
       "$INDENT_BLANKLINE")
-        install_plugin "$PLUGIN_START_DIR" "$INDENT_BLANKLINE" true
+        install_plugin "$PLUGIN_START_DIR" "$INDENT_BLANKLINE"
         ;;
       "$HOP")
-        install_plugin "$PLUGIN_START_DIR" "$HOP" true
+        install_plugin "$PLUGIN_START_DIR" "$HOP"
         ;;
       "$WHICHKEY")
-        install_plugin "$PLUGIN_START_DIR" "$WHICHKEY" true
+        install_plugin "$PLUGIN_START_DIR" "$WHICHKEY"
         ;;
       "$COMMENT")
-        install_plugin "$PLUGIN_START_DIR" "$COMMENT" true
+        install_plugin "$PLUGIN_START_DIR" "$COMMENT"
         ;;
     esac
   done
