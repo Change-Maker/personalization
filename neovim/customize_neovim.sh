@@ -69,8 +69,8 @@ readonly GITSIGNS='gitsigns'
 readonly INDENT_BLANKLINE='indent-blankline'
 readonly HOP='hop'
 readonly WHICHKEY='which-key'
-# TODO: The following plugins are not added into customization.
 readonly COMMENT='comment'
+# TODO: The following plugins are not added into customization.
 readonly TODO_COMMENTS='todo-comments'
 readonly TOGGLETERM='toggleterm'
 
@@ -468,6 +468,10 @@ function confirm_nvim_plugin() {
 
   if confirm "Would you like to install $HOP - An EasyMotion-like plugin allowing you to jump anywhere in a document?"; then
     nvim_plugin["$HOP"]=1
+  fi
+
+  if confirm "Would you like to install $COMMENT - Smart and powerful comment plugin?"; then
+    nvim_plugin["$COMMENT"]=1
   fi
 
   if confirm "Would you like to install $WHICHKEY - A popup with possible key bindings of the command you started typing?"; then
@@ -1143,6 +1147,23 @@ function config_hop() {
 }
 
 
+function config_comment() {
+  write_plugin_config "-- $COMMENT"
+  write_plugin_config 'require("Comment").setup()'
+  write_plugin_config 'local function toggle_comment()'
+  write_plugin_config '  if vim.v.count == 0 then'
+  write_plugin_config '    return "<Plug>(comment_toggle_linewise_current)"'
+  write_plugin_config '  else'
+  write_plugin_config '    return "<Plug>(comment_toggle_linewise_count)"'
+  write_plugin_config '  end'
+  write_plugin_config 'end'
+  write_plugin_config '-- Toggle current line or with count'
+  write_plugin_config 'vim.keymap.set("n", "<C-/>", toggle_comment, { expr = true })'
+  write_plugin_config 'vim.keymap.set("x", "<C-/>", "<Plug>(comment_toggle_linewise_visual)")'
+  write_plugin_config ''
+}
+
+
 function config_whichkey() {
   write_plugin_config "-- $WHICHKEY"
   write_plugin_config 'local whichkey = require("which-key")'
@@ -1172,6 +1193,9 @@ function config_whichkey() {
   write_plugin_config '    K = { "<CMD>resize +5<CR>", "Make current split larger vertically" },'
   write_plugin_config '    L = { "<CMD>wincmd 5><CR>", "Make current split larger horizontally" },'
   write_plugin_config '  },'
+  if [ -n "${nvim_plugin[$COMMENT]}" ]; then
+    write_plugin_config '  ["/"] = { "<Plug>(comment_toggle_linewise_current)", "Toggle line comment" },'
+  fi
   if [ -n "${nvim_plugin[$NVIMTREE]}" ]; then
     write_plugin_config '  e = { "<CMD>NvimTreeToggle<CR>", "Toggle file explorer" },'
   fi
@@ -1188,7 +1212,21 @@ function config_whichkey() {
   write_plugin_config '  noremap = true,'
   write_plugin_config '  nowait = true,'
   write_plugin_config '}'
+  write_plugin_config 'local wk_vmappings = {'
+  if [ -n "${nvim_plugin[$COMMENT]}" ]; then
+    write_plugin_config '  ["/"] = { "<Plug>(comment_toggle_linewise_visual)", "Toggle comment" },'
+  fi
+  write_plugin_config '}'
+  write_plugin_config 'local wk_vopts = {'
+  write_plugin_config '  mode = "x",'
+  write_plugin_config '  prefix = "<Space>",'
+  write_plugin_config '  buffer = nil,'
+  write_plugin_config '  silent = true,'
+  write_plugin_config '  noremap = true,'
+  write_plugin_config '  nowait = true,'
+  write_plugin_config '}'
   write_plugin_config 'whichkey.register(wk_mappings, wk_opts)'
+  write_plugin_config 'whichkey.register(wk_vmappings, wk_vopts)'
   write_plugin_config 'vim.opt.timeoutlen = 150'
   write_plugin_config ''
 }
@@ -1229,6 +1267,10 @@ function config_plugins() {
 
   if [ -n "${nvim_plugin[$HOP]}" ]; then
     config_hop
+  fi
+
+  if [ -n "${nvim_plugin[$COMMENT]}" ]; then
+    config_comment
   fi
 
   if [ -n "${nvim_plugin[$WHICHKEY]}" ]; then
@@ -1319,6 +1361,9 @@ function install_nvim_plugins() {
         ;;
       "$WHICHKEY")
         install_plugin "$PLUGIN_START_DIR" "$WHICHKEY" true
+        ;;
+      "$COMMENT")
+        install_plugin "$PLUGIN_START_DIR" "$COMMENT" true
         ;;
     esac
   done
