@@ -226,6 +226,10 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
 
   ![hop search 2 chars overwin](https://user-images.githubusercontent.com/18575008/253169946-735d6129-aeb6-48b7-abb5-29303750739c.png)
 
+- [**comment**](https://github.com/numToStr/Comment.nvim)
+
+  Use `Ctrl` + `/` to toggle line comment in Normal mode and Visual mode.
+
 - [**which-key**](https://github.com/folke/which-key.nvim)
 
   Use `<Space>` to trigger which-key menu.
