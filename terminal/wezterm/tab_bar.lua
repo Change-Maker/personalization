@@ -35,6 +35,41 @@ local colors = {
   separator = "#1a1b26",
 }
 
+local function bubble(tab, tabs, panes, cfg, hover, max_width)
+  local edge_bg = colors.separator
+  local bg = colors.inactive.bg
+  local fg = colors.inactive.fg
+
+  if tab.is_active then
+    bg = colors.active.bg
+    fg = colors.active.fg
+  end
+
+  local edge_fg = bg
+
+  local title = tab_title(tab)
+  title = " "..title
+
+  -- ensure that the titles fit in the available space,
+  -- and that we have room for the edges.
+  if #title > max_width then
+    title = wezterm.truncate_right(title, max_width - 3)
+    title = string.format("%s…", title)
+  end
+
+  return {
+    { Background = { Color = edge_bg } },
+    { Foreground = { Color = bg } },
+    { Text = wezterm.nerdfonts.ple_left_half_circle_thick },
+    { Background = { Color = bg } },
+    { Foreground = { Color = fg } },
+    { Text = title:sub(2) },
+    { Background = { Color = edge_bg } },
+    { Foreground = { Color = edge_fg } },
+    { Text = wezterm.nerdfonts.ple_right_half_circle_thick },
+  }
+end
+
 local function powerline_slant(tab, tabs, panes, cfg, hover, max_width)
   local edge_bg = colors.separator
   local bg = colors.inactive.bg
