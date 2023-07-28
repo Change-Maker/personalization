@@ -71,6 +71,11 @@ local keybindings = {
     },
   },
   {
+    key = "N",
+    mods = "CTRL|SHIFT",
+    action = act.ShowLauncher,
+  },
+  {
     key = "Q",
     mods = "CTRL|SHIFT",
     action = act.CloseCurrentTab({ confirm = true }),
@@ -198,9 +203,12 @@ local keybindings = {
     action = act.TogglePaneZoomState,
   },
   {
-    key = "N",
+    key = "R",
     mods = "CTRL|SHIFT",
-    action = act.ShowLauncher,
+    action = act.ActivateKeyTable({
+      name = "resize_pane",
+      one_shot = false,
+    }),
   },
   -- Scrollback.
   {
@@ -265,8 +273,56 @@ local keybindings = {
   },
 }
 
+local key_tables = {
+  resize_pane = {
+    {
+      key = "LeftArrow",
+      action = act.AdjustPaneSize({ "Left", 1 }),
+    },
+    {
+      key = "h",
+      action = act.AdjustPaneSize({ "Left", 1 }),
+    },
+    {
+      key = "RightArrow",
+      action = act.AdjustPaneSize({ "Right", 1 }),
+    },
+    {
+      key = "l",
+      action = act.AdjustPaneSize({ "Right", 1 }),
+    },
+    {
+      key = "UpArrow",
+      action = act.AdjustPaneSize({ "Up", 1 }),
+    },
+    {
+      key = "k",
+      action = act.AdjustPaneSize({ "Up", 1 }),
+    },
+    {
+      key = "DownArrow",
+      action = act.AdjustPaneSize({ "Down", 1 }),
+    },
+    {
+      key = "j",
+      action = act.AdjustPaneSize({ "Down", 1 }),
+    },
+    -- Cancel the mode by pressing escape
+    {
+      key = "Escape",
+      action = "PopKeyTable",
+    },
+    {
+      key = "R",
+      mods = "CTRL|SHIFT",
+      action = "PopKeyTable",
+    },
+  }
+}
+
 function M.apply_to_config(config)
   config.keys = keybindings
+  config.key_tables = key_tables
 end
 
 return M
