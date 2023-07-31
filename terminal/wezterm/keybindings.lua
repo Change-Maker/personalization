@@ -4,6 +4,12 @@ local act = wezterm.action
 local M = {}
 
 local keybindings = {
+    -- General.
+  {
+    key = "F5",
+    mods = "CTRL|SHIFT",
+    action = act.ReloadConfiguration,
+  },
   -- Tabs management.
   {
     key = "T",
