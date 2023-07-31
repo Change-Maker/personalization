@@ -33,6 +33,10 @@ local colors = {
     fg = "#1a1b26",
   },
   separator = "#1a1b26",
+  right_status = {
+    bg = "#2ac3de",
+    fg = "#1a1b26",
+  },
 }
 
 local function bubble(tab, tabs, panes, cfg, hover, max_width)
@@ -187,6 +191,24 @@ local function flexbox_right_sep(tab, tabs, panes, cfg, hover, max_width)
 end
 
 wezterm.on("format-tab-title", flexbox_left_sep)
+
+local function update_right_status(window, pane)
+  local key_table = window:active_key_table()
+  if key_table then
+    window:set_right_status(wezterm.format({
+      { Background = { Color = colors.right_status.bg } },
+      { Foreground = { Color = colors.separator } },
+      { Text = wezterm.nerdfonts.ple_upper_left_triangle },
+      { Background = { Color = colors.right_status.bg } },
+      { Foreground = { Color = colors.right_status.fg } },
+      { Text = " TABLE: "..key_table.." " },
+    }))
+  else
+    window:set_right_status("")
+  end
+end
+
+wezterm.on("update-right-status", update_right_status)
 
 function M.apply_to_config(config)
   config.show_new_tab_button_in_tab_bar = false
