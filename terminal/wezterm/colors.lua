@@ -4,8 +4,9 @@ local M = {}
 local override = {
   ["Tokyo Night"] = {
     colors = {
-      selection_fg = "none",
       split = "#7aa2f7",
+      copy_mode_active_highlight_bg = { Color = "#ff9e64" },
+      copy_mode_active_highlight_fg = { Color = "#1a1b26" },
     },
     command_palette_bg_color = "#24283b",
     command_palette_fg_color = "#a9b1d6",
