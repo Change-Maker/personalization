@@ -4,7 +4,7 @@ local act = wezterm.action
 local M = {}
 
 local keybindings = {
-    -- General.
+  -- General.
   {
     key = "F5",
     mods = "CTRL|SHIFT",
@@ -22,6 +22,7 @@ local keybindings = {
     key = "F2",
     action = act.SpawnCommandInNewTab {
       domain = "DefaultDomain",
+      cwd = wezterm.home_dir,
     },
   },
   {
@@ -101,7 +102,7 @@ local keybindings = {
     key = "F2",
     mods = "SHIFT",
     action = act.SplitPane({
-      command = { domain = "DefaultDomain" },
+      command = { domain = "DefaultDomain", cwd = wezterm.home_dir },
       direction = "Down",
     }),
   },
@@ -117,7 +118,7 @@ local keybindings = {
     key = "F2",
     mods = "CTRL",
     action = act.SplitPane({
-      command = { domain = "DefaultDomain" },
+      command = { domain = "DefaultDomain", cwd = wezterm.home_dir },
       direction = "Right",
     }),
   },
