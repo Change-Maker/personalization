@@ -174,7 +174,7 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
   })
   ```
 
-  ![lualine](https://user-images.githubusercontent.com/18575008/253169744-0bcf3f50-6232-4570-af46-9dd4f9b0b651.png)
+  ![lualine](https://user-images.githubusercontent.com/18575008/257671556-0c26e407-2c32-46fa-a588-07b5454572af.png)
 
 - [**nvim-tree**](https://github.com/nvim-tree/nvim-tree.lua)
 
