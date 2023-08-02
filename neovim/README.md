@@ -38,7 +38,7 @@
 - `-nc, --no-color`: Disable color on log messages.
 - `-y, --yes`: Accept all customization options.
 
-To show help message:
+To show help messages:
 
 - Bash, Zsh
 
@@ -95,6 +95,8 @@ To show help message:
   [y]es or [n]o (default: no): y
 > Would you like to install hop - An EasyMotion-like plugin allowing you to jump
   anywhere in a document?
+  [y]es or [n]o (default: no): y
+> Would you like to install comment - Smart and powerful comment plugin?
   [y]es or [n]o (default: no): y
 > Would you like to install which-key - A popup with possible key bindings of
   the command you started typing?
