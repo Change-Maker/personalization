@@ -238,6 +238,14 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
 
   ![which-key](https://user-images.githubusercontent.com/18575008/253169963-ee4c6608-b67f-485d-9122-5770397f187b.png)
 
+## Todo List
+
+- [ ] Convert configuration from Vim script to lua.
+- [ ] Verify Neovim carefully.
+- [ ] Check Neovim version before customization.
+- [ ] Setup todo-comments plugin.
+- [ ] Setup toggleterm.nvim plugin.
+
 ## Known Issues
 
 - `cursorline` is set to off after `:HopPattern`.
