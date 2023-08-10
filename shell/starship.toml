@@ -45,10 +45,10 @@ symbol = " "
 
 [character]
 disabled = false
-format = '[$symbol($version )]($style)'
 
 [cmake]
 disabled = false
+format = '[$symbol($version )]($style)'
 
 [cobol]
 disabled = true
@@ -130,7 +130,7 @@ symbol = " "
 disabled = false
 format = '[\($hash$tag\)]($style) '
 tag_disabled = false
-tag_symbol = " "
+tag_symbol = " "
 
 [git_state]
 disabled = false
