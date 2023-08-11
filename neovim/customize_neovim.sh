@@ -1375,22 +1375,22 @@ function add_xdg_bin_path() {
   case "$shell" in
     "bash")
       echo '' >> "$shellconfig"
-      echo '# Neovim' >> "$shellconfig"
-      echo 'command -v nvim &> /dev/null || export PATH="'"$XDG_BIN_HOME"':$PATH"' >> "$shellconfig"
+      echo '# XDG_BIN_HOME' >> "$shellconfig"
+      echo 'export PATH="'"$XDG_BIN_HOME"':$PATH"' >> "$shellconfig"
       msg=(
         "The following lines are added into $shellconfig:\n\n"
-        "        # Neovim\n"
-        '        command -v nvim &> /dev/null || export PATH="'"$XDG_BIN_HOME"':$PATH"\n'
+        "        # XDG_BIN_HOME\n"
+        '        export PATH="'"$XDG_BIN_HOME"':$PATH"\n'
       )
       ;;
     "zsh")
       echo '' >> "$shellconfig"
-      echo '# Neovim' >> "$shellconfig"
-      echo 'command -v nvim &> /dev/null || export PATH="'"$XDG_BIN_HOME"':$PATH"' >> "$shellconfig"
+      echo '# XDG_BIN_HOME' >> "$shellconfig"
+      echo 'export PATH="'"$XDG_BIN_HOME"':$PATH"' >> "$shellconfig"
       msg=(
         "The following lines are added into $shellconfig:\n\n"
-        "        # Neovim\n"
-        '        command -v nvim &> /dev/null || export PATH="'"$XDG_BIN_HOME"':$PATH"\n'
+        "        # XDG_BIN_HOME\n"
+        '        export PATH="'"$XDG_BIN_HOME"':$PATH"\n'
       )
       ;;
     "fish")
@@ -1399,12 +1399,12 @@ function add_xdg_bin_path() {
         mkdir -p "$HOME/.config/fish/conf.d"
       fi
       echo '' >> "$shellconfig"
-      echo '# Neovim' >> "$shellconfig"
-      echo 'command -v nvim &> /dev/null || set -gx PATH '"$XDG_BIN_HOME"' $PATH' >> "$shellconfig"
+      echo '# XDG_BIN_HOME' >> "$shellconfig"
+      echo 'set -gx PATH '"$XDG_BIN_HOME"' $PATH' >> "$shellconfig"
       msg=(
         "The following lines are added into $shellconfig:\n\n"
-        "        # Neovim\n"
-        '        command -v nvim &> /dev/null || set -gx PATH '"$XDG_BIN_HOME"' $PATH\n'
+        "        # XDG_BIN_HOME\n"
+        '        set -gx PATH '"$XDG_BIN_HOME"' $PATH\n'
       )
       ;;
   esac
