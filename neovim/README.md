@@ -6,17 +6,18 @@
 
 ## Requirements
 
-- Neovim >= 0.8.0 if use any of the following plugins:
+- Neovim >= 0.8.0 if using any of the following plugins:
   - nvim-tree
   - bufferline
   - gitsigns
-- Neovim >= 0.7.0 if use any of the following plugins:
+- Neovim >= 0.7.0 if using any of the following plugins:
   - nvim-web-devicons
   - which-key
-- Neovim >= 0.5 if use any of the following plugins:
+- Neovim >= 0.5 if using any of the following plugins:
   - lualine
   - indent-blankline
-- Nerd Fonts >= 2.3 if use nvim-web-devicons, bufferline
+- Nerd Fonts >= 2.3 if using nvim-web-devicons, bufferline.
+- Git if using lualine, gitsigns.
 
 ## Run Customization
 
@@ -166,6 +167,8 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
 
 - [**lualine**](https://github.com/nvim-lualine/lualine.nvim)
 
+  Git is required.
+
   To change the theme:
 
   ```lua
@@ -210,6 +213,8 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
   ![bufferline](https://user-images.githubusercontent.com/18575008/253169832-3d8241de-616a-4819-afe8-be283b1e9a71.png)
 
 - [**gitsigns**](https://github.com/lewis6991/gitsigns.nvim)
+
+  Git is required.
 
   ![gitsigns](https://user-images.githubusercontent.com/18575008/253169905-016cb1e9-83a9-4056-90f2-06c1520666df.png)
 
