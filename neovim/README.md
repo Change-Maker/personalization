@@ -248,8 +248,9 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
 - [ ] Convert configuration from Vim script to lua.
 - [ ] Verify Neovim carefully.
 - [ ] Check Neovim version before customization.
-- [ ] Setup todo-comments plugin.
-- [ ] Setup toggleterm.nvim plugin.
+- [ ] Setup [todo-comments](https://github.com/folke/todo-comments.nvim) plugin.
+- [ ] Setup [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) plugin.
+- [ ] Setup [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) plugin.
 
 ## Known Issues
 
