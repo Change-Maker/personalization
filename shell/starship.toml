@@ -55,6 +55,8 @@ disabled = true
 
 [cmd_duration]
 disabled = false
+format = '[󰔚 $duration]($style) '
+show_notifications = true
 
 [conda]
 disabled = true
@@ -128,9 +130,9 @@ symbol = " "
 
 [git_commit]
 disabled = false
-format = '[\($hash$tag\)]($style) '
+format = '[\( $hash$tag\)]($style) '
 tag_disabled = false
-tag_symbol = " "
+tag_symbol = "  "
 
 [git_state]
 disabled = false
@@ -139,8 +141,8 @@ disabled = false
 disabled = true
 
 [git_status]
-ahead = ""
-behind = ""
+ahead = "󰜷"
+behind = "󰜮"
 conflicted = "󰦎"
 deleted = "D"
 disabled = false
@@ -350,10 +352,10 @@ symbol = "🅢 "
 disabled = false
 format = '[($symbol $status )($common_meaning )($signal_name )]($style)'
 map_symbol = true
-not_executable_symbol = "✗"
-not_found_symbol = "✗"
-sigint_symbol = "ϟ"
-symbol = "✗"
+not_executable_symbol = ""
+not_found_symbol = ""
+sigint_symbol = "󱐋"
+symbol = ""
 
 [sudo]
 disabled = true
