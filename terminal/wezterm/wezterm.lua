@@ -32,7 +32,7 @@ config.force_reverse_video_cursor = true
 
 -- Fonts
 config.font = wezterm.font {
-  family = "FiraCode Nerd Font Mono",
+  family = "FiraCode Nerd Font",
   harfbuzz_features = { "ss03", "cv04", "calt=0" },
 }
 
