@@ -251,8 +251,9 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
 - [ ] Setup [todo-comments](https://github.com/folke/todo-comments.nvim) plugin.
 - [ ] Setup [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) plugin.
 - [ ] Setup [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) plugin.
-- [ ] Setup [lazy.nvim](https://github.com/folke/lazy.nvim)
-- [ ] Setup [rest.nvim](https://github.com/rest-nvim/rest.nvim)
+- [ ] Setup [lazy.nvim](https://github.com/folke/lazy.nvim) plugin.
+- [ ] Setup [rest.nvim](https://github.com/rest-nvim/rest.nvim) plugin.
+- [ ] Setup [nvim-dap](https://github.com/mfussenegger/nvim-dap) plugin.
 
 ## Known Issues
 
