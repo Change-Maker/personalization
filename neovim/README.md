@@ -266,7 +266,7 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
 
   ![cursorline highlight issuse](https://user-images.githubusercontent.com/18575008/253169995-1077a174-0e89-4494-8a1b-6941d6f1d0ee.png)
 
-- It raise an error if you quit editor without saving when NvimTree is opening.
+- It raises an error if quits editor without saving when NvimTree is opening.
 
   - Steps to reproduce:
 
@@ -276,7 +276,7 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
 
   ![nvim-tree auto close issue](https://user-images.githubusercontent.com/18575008/253170006-eaaacaef-3639-4e83-9d1f-bb8ecb5acb0a.png)
 
-- It raise an error if run `:HopWordAC` or `:HopWordBC` on a blank line.
+- It raises an error if runs `:HopWordAC` or `:HopWordBC` on a blank line.
 
   You could check [this issue](https://github.com/phaazon/hop.nvim/issues/361) for more information.
 
