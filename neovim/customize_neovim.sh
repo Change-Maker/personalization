@@ -1122,11 +1122,9 @@ function config_gitsigns() {
 
 function config_indent_blankline() {
   write_plugin_config "-- $INDENT_BLANKLINE"
-  write_plugin_config 'require("indent_blankline").setup({'
-  write_plugin_config '  char = "▏",'
-  write_plugin_config '  indent_level = 60,'
+  write_plugin_config 'require("ibl").setup({'
+  write_plugin_config '  indent = { char = "▏" },'
   write_plugin_config '})'
-  write_plugin_config 'vim.api.nvim_set_hl(0, "IndentBlanklineChar", { ctermfg = 236, fg = "#303030", nocombine = true })'
   write_plugin_config ''
 }
 
