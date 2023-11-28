@@ -245,7 +245,7 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
 
 ## Todo List
 
-- [ ] Convert configuration from Vim script to lua.
+- [x] Convert configuration from Vim script to lua.
 - [ ] Verify Neovim carefully.
 - [ ] Check Neovim version before customization.
 - [ ] Setup [todo-comments](https://github.com/folke/todo-comments.nvim) plugin.
@@ -254,6 +254,9 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
 - [ ] Setup [lazy.nvim](https://github.com/folke/lazy.nvim) plugin.
 - [ ] Setup [rest.nvim](https://github.com/rest-nvim/rest.nvim) plugin.
 - [ ] Setup [nvim-dap](https://github.com/mfussenegger/nvim-dap) plugin.
+- [ ] Setup [nvim-notify](https://github.com/rcarriga/nvim-notify) plugin.
+- [ ] Pick [smartcolumn.nvim](https://github.com/m4xshen/smartcolumn.nvim) plugin
+  or [deadcolumn.nvim](https://github.com/Bekaboo/deadcolumn.nvim) plugin.
 
 ## Known Issues
 
