@@ -47,16 +47,18 @@ readonly NVIM_RELEASE_DIR="$XDG_DATA_HOME/nvim"
 readonly NVIM_RELEASE_BACKUP="$XDG_DATA_HOME/nvim.backup"
 readonly NVIM_CONFIG_DIR="$XDG_CONFIG_HOME/nvim"
 readonly NVIM_CONFIG_BACKUP="$XDG_CONFIG_HOME/nvim.backup"
-readonly NVIM_CONFIG="$NVIM_CONFIG_DIR/init.vim"
-readonly NVIM_KEYMAPPING="$NVIM_CONFIG_DIR/keymappings.lua"
-readonly PLUGIN_CONFIG="$NVIM_CONFIG_DIR/plugin_settings.lua"
+readonly NVIM_CONFIG_INIT="$NVIM_CONFIG_DIR/init.lua"
+readonly NVIM_CONFIG_LUA_DIR="$NVIM_CONFIG_DIR/lua/config"
+readonly NVIM_CONFIG="$NVIM_CONFIG_LUA_DIR/init.lua"
+readonly NVIM_KEYMAPPING="$NVIM_CONFIG_LUA_DIR/keymappings.lua"
+readonly PLUGIN_CONFIG="$NVIM_CONFIG_LUA_DIR/plugin_settings.lua"
 readonly PLUGIN_START_DIR="$NVIM_CONFIG_DIR/pack/myplugins/start"
 readonly PLUGIN_OPT_DIR="$NVIM_CONFIG_DIR/pack/myplugins/opt"
 readonly NVIM_FTPLUGIN_DIR="$NVIM_CONFIG_DIR/ftplugin"
-readonly FTPLUGIN_C="$NVIM_FTPLUGIN_DIR/c.vim"
-readonly FTPLUGIN_GIT="$NVIM_FTPLUGIN_DIR/gitcommit.vim"
-readonly FTPLUGIN_JAVASCRIPT="$NVIM_FTPLUGIN_DIR/javascript.vim"
-readonly FTPLUGIN_PYTHON="$NVIM_FTPLUGIN_DIR/python.vim"
+readonly FTPLUGIN_C="$NVIM_FTPLUGIN_DIR/c.lua"
+readonly FTPLUGIN_GIT="$NVIM_FTPLUGIN_DIR/gitcommit.lua"
+readonly FTPLUGIN_JAVASCRIPT="$NVIM_FTPLUGIN_DIR/javascript.lua"
+readonly FTPLUGIN_PYTHON="$NVIM_FTPLUGIN_DIR/python.lua"
 
 # Neovim plugins.
 readonly KANAGAWA='kanagawa'
@@ -577,6 +579,7 @@ function confirm_continue() {
   fi
   echo "  - Create Neovim config folder: $NVIM_CONFIG_DIR"
   echo "  - Create configuration files:"
+  echo "    - $NVIM_CONFIG_INIT"
   echo "    - $NVIM_CONFIG"
   echo "    - $NVIM_KEYMAPPING"
   echo "    - $PLUGIN_CONFIG"
@@ -714,12 +717,19 @@ function install_nvim_from_github() {
 
 
 function create_nvim_config_dir() {
-  mkdir -p "$NVIM_CONFIG_DIR" "$PLUGIN_START_DIR" "$PLUGIN_OPT_DIR" "$NVIM_FTPLUGIN_DIR"
+  mkdir -p "$NVIM_CONFIG_DIR" "$NVIM_CONFIG_LUA_DIR" "$PLUGIN_START_DIR" "$PLUGIN_OPT_DIR" "$NVIM_FTPLUGIN_DIR"
   log "Neovim config folder created: $NVIM_CONFIG_DIR"
 }
 
 
+function create_nvim_config_init() {
+  echo 'require("config")' >> "$NVIM_CONFIG_INIT"
+}
+
+
 function create_configs() {
+  create_nvim_config_init
+
   touch "$NVIM_CONFIG"
   touch "$NVIM_KEYMAPPING"
   touch "$PLUGIN_CONFIG"
@@ -728,6 +738,7 @@ function create_configs() {
   touch "$FTPLUGIN_JAVASCRIPT"
   touch "$FTPLUGIN_PYTHON"
   log "Empty configuration files created:
+         - $NVIM_CONFIG_INIT
          - $NVIM_CONFIG
          - $NVIM_KEYMAPPING
          - $PLUGIN_CONFIG
@@ -744,117 +755,117 @@ function write_nvim_config() {
 
 
 function config_nvim_settings() {
-  # TODO: Convert vim script into lua.
   if [ -n "${nvim_plugin[$NVIMTREE]}" ]; then
-    write_nvim_config '""" Disable netrw.'
-    write_nvim_config 'let g:loaded_netrw = 1'
-    write_nvim_config 'let g:loaded_netrwPlugin = 1'
+    write_nvim_config '-- Disable netrw.'
+    write_nvim_config 'vim.g.loaded_netrw = 1'
+    write_nvim_config 'vim.g.loaded_netrwPlugin = 1'
     write_nvim_config ''
   fi
-  write_nvim_config '""" Colorscheme.'
-  write_nvim_config '""" You could get the list of built-in colorschemes by running:'
-  write_nvim_config "\"\"\" \`ls \$VIMRUNTIME/colors | grep '.vim'\`"
-  write_nvim_config "\"\"\" \$VIMRUNTIME is something like '/usr/share/nvim/runtime'."
-  write_nvim_config "\"\"\" Run \`:echo \$VIMRUNTIME\` in Neovim to get \$VIMRUNTIME."
-  write_nvim_config 'set termguicolors'
+  write_nvim_config '-- Colorscheme'
+  write_nvim_config '-- You could get the list of built-in colorschemes by running:'
+  write_nvim_config '-- `ls $VIMRUNTIME/colors | grep '"'".vim"'"'`'
+  write_nvim_config '-- $VIMRUNTIME is something like '"'"/usr/share/nvim/runtime'.'"'"
+  write_nvim_config '-- Run `:echo $VIMRUNTIME` in Neovim to get $VIMRUNTIME.'
+  write_nvim_config 'vim.opt.termguicolors = true'
   if [ -z "${nvim_plugin[$KANAGAWA]}" ]; then
-    write_nvim_config 'color desert'
+    write_nvim_config 'vim.cmd.colorscheme("desert")'
   fi
   write_nvim_config ''
 
-  write_nvim_config '""" Enable syntax.'
-  write_nvim_config 'syntax on'
+  write_nvim_config '-- Enable line numbers.'
+  write_nvim_config 'vim.opt.number = true'
   write_nvim_config ''
 
-  write_nvim_config '""" Disable compatible with vi.'
-  write_nvim_config 'set nocompatible'
+  write_nvim_config '-- Setup the size of actual tab characters in the buffer (unit: whitespaces).'
+  write_nvim_config 'vim.opt.tabstop = 2'
   write_nvim_config ''
 
-  write_nvim_config '""" Enable line number.'
-  write_nvim_config 'set number'
+  write_nvim_config '-- Setup the number of whitespaces inserted when hitting the tab key.'
+  write_nvim_config 'vim.opt.softtabstop = 2'
   write_nvim_config ''
 
-  write_nvim_config '""" Enable mouse.'
-  write_nvim_config 'set mouse=a'
+  write_nvim_config '-- Setup the size of indentation (unit: whitespaces).'
+  write_nvim_config 'vim.opt.shiftwidth = 2'
   write_nvim_config ''
 
-  write_nvim_config '""" Check filetype and indent of files automatically.'
-  write_nvim_config 'filetype plugin indent on'
+  write_nvim_config '-- Insert whitespaces when passing Tab.'
+  write_nvim_config 'vim.expandtab = true'
   write_nvim_config ''
 
-  write_nvim_config '""" Setup the size of actual tab characters in the buffer.'
-  write_nvim_config 'set tabstop=2'
-  write_nvim_config ''
-
-  write_nvim_config '""" Setup the number of whitespaces inserted when hitting the tab key.'
-  write_nvim_config 'set softtabstop=2'
-  write_nvim_config ''
-
-  write_nvim_config '""" Setup the size of indents.'
-  write_nvim_config 'set shiftwidth=2'
-  write_nvim_config ''
-
-  write_nvim_config "\"\"\" 'cindent' is based on 'smartindent'."
-  write_nvim_config "\"\"\" 'smartindent' is based on 'autoindent'."
-  write_nvim_config 'set cindent'
-  write_nvim_config ''
-
-  write_nvim_config '""" Enable insert whitespaces when passing Tab.'
-  write_nvim_config 'set expandtab'
-  write_nvim_config ''
-
-  write_nvim_config "\"\"\" '·' symbol need utf-8 encoding."
-  write_nvim_config 'set encoding=utf-8'
+  write_nvim_config '-- "cindent" is based on "smartindent".'
+  write_nvim_config '-- "smartindent" is based on "autoindent".'
+  write_nvim_config 'vim.opt.cindent = true'
   write_nvim_config ''
 
   if [ -z "${nvim_plugin[$BETTER_WHITESPACE]}" ]; then
-    write_nvim_config '""" Display all trailing whitespaces.'
-    write_nvim_config 'set list'
-    write_nvim_config 'set listchars=trail:·'
+    write_nvim_config '-- Display all trailing whitespaces.'
+    write_nvim_config 'vim.opt.list = true'
+    write_nvim_config 'vim.opt.listchars = "trail:·"'
     write_nvim_config ''
   fi
 
-  write_nvim_config '""" hlsearch enable highlight of searching result.'
-  write_nvim_config 'set hlsearch'
-  write_nvim_config '""" Highlight searching result when typing.'
-  write_nvim_config 'set incsearch'
+  write_nvim_config '-- Make horizontal split default to below.'
+  write_nvim_config 'vim.opt.splitbelow = true'
+  write_nvim_config '-- Make vertical split default to right.'
+  write_nvim_config 'vim.opt.splitright = true'
   write_nvim_config ''
 
-  write_nvim_config '""" Make horizontal split default to below.'
-  write_nvim_config 'set splitbelow'
-  write_nvim_config '""" Make vertical split default to right.'
-  write_nvim_config 'set splitright'
+  write_nvim_config '-- Disable word wrap.'
+  write_nvim_config 'vim.opt.wrap = false'
+  write_nvim_config ''
 
-  write_nvim_config '""" Disable word wrap.'
-  write_nvim_config 'set nowrap'
-
-  write_nvim_config '""" Highlight pair bracket.'
-  write_nvim_config 'set showmatch'
+  write_nvim_config '-- Highlight pair brackets.'
+  write_nvim_config 'vim.opt.showmatch = true'
   write_nvim_config ''
 
   if [ "$use_rulers" = true ]; then
-    write_nvim_config '""" Setup rulers.'
-    write_nvim_config 'let &colorcolumn="101,".join(range(121,999),",")'
+    write_nvim_config '-- Setup rulers.'
+    write_nvim_config 'vim.opt.colorcolumn = "101," .. vim.fn.join(vim.fn.range(121, 254), ",")'
     write_nvim_config ''
   fi
 
-  write_nvim_config "\"\"\" Enable hybrid line numbers (Ctrl-C won't toggle)."
-  write_nvim_config 'augroup toggle_relative_line_numbers'
-  write_nvim_config '  autocmd!'
-  write_nvim_config '  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif'
-  write_nvim_config '  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif'
-  write_nvim_config 'augroup END'
+  write_nvim_config "-- Toggle relative line numbers automatically (Ctrl-C won't toggle)."
+  write_nvim_config 'local hybrid_line_nums_grp = vim.api.nvim_create_augroup("HybridLineNums", {})'
+  write_nvim_config 'vim.api.nvim_create_autocmd('
+  write_nvim_config '  {"BufEnter", "FocusGained", "InsertLeave", "WinEnter"},'
+  write_nvim_config '        {'
+  write_nvim_config '                pattern = "*",'
+  write_nvim_config '                callback = function ()'
+  write_nvim_config '                        if (vim.wo.number and vim.api.nvim_get_mode().mode ~= "i") then'
+  write_nvim_config '                                vim.wo.relativenumber = true'
+  write_nvim_config '                        end'
+  write_nvim_config '                end,'
+  write_nvim_config '                group = hybrid_line_nums_grp,'
+  write_nvim_config '        })'
+  write_nvim_config 'vim.api.nvim_create_autocmd('
+  write_nvim_config '  {"BufLeave", "FocusLost", "InsertEnter", "WinLeave"},'
+  write_nvim_config '        {'
+  write_nvim_config '                pattern = "*",'
+  write_nvim_config '                callback = function ()'
+  write_nvim_config '                        if vim.wo.number then'
+  write_nvim_config '                                vim.wo.relativenumber = false'
+  write_nvim_config '                        end'
+  write_nvim_config '                end,'
+  write_nvim_config '                group = hybrid_line_nums_grp,'
+  write_nvim_config '        })'
   write_nvim_config ''
 
-  write_nvim_config '""" Highlight yank area when yanking.'
-  write_nvim_config 'augroup highlight_on_yank'
-  write_nvim_config '    autocmd!'
-  write_nvim_config '    au TextYankPost * silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=150})'
-  write_nvim_config 'augroup END'
+  write_nvim_config '-- Highlight yank area while yanking.'
+  write_nvim_config 'local yank_highlighting_grp = vim.api.nvim_create_augroup("YankHighlighting", {})'
+  write_nvim_config 'vim.api.nvim_create_autocmd('
+  write_nvim_config '        {"TextYankPost"},'
+  write_nvim_config '        {'
+  write_nvim_config '                pattern = "*",'
+  write_nvim_config '                callback = function()'
+  write_nvim_config '                        vim.highlight.on_yank({higroup="IncSearch", timeout=150})'
+  write_nvim_config '                end,'
+  write_nvim_config '                group = yank_highlighting_grp,'
+  write_nvim_config '        })'
   write_nvim_config ''
 
-  write_nvim_config "source $NVIM_KEYMAPPING"
-  write_nvim_config "source $PLUGIN_CONFIG"
+  write_nvim_config 'require("config.keymappings")'
+  write_nvim_config 'require("config.plugin_settings")'
+
   log "Neovim configuration file created: $NVIM_CONFIG"
 }
 
@@ -1282,13 +1293,13 @@ function config_plugins() {
 function config_ftplugins() {
   if [ "$use_rulers" = true ]; then
     # For cpp.
-    echo 'set colorcolumn=121' >> $FTPLUGIN_C
+    echo 'vim.wo.colorcolumn = "121"' >> $FTPLUGIN_C
     # For Git.
-    echo 'let &colorcolumn="51,".join(range(73,999),",")' >> $FTPLUGIN_GIT
+    echo 'vim.wo.colorcolumn = "51," .. vim.fn.join(vim.fn.range(73, 254), ",")' >> $FTPLUGIN_GIT
     # For JavaScript.
-    echo 'set colorcolumn=101' >> $FTPLUGIN_JAVASCRIPT
+    echo 'vim.wo.colorcolumn = "101"' >> $FTPLUGIN_JAVASCRIPT
     # For Python.
-    echo 'let &colorcolumn="73,".join(range(80,999),",")' >> $FTPLUGIN_PYTHON
+    echo 'vim.wo.colorcolumn = "73," .. vim.fn.join(vim.fn.range(80, 254), ",")' >> $FTPLUGIN_PYTHON
   fi
 
   local ftplugins=$(ls "$NVIM_FTPLUGIN_DIR" | tr "\n" " ")
