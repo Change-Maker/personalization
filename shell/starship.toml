@@ -39,6 +39,7 @@ symbol = " "
 disabled = true
 
 [c]
+commands = [["clang++", "--version"], ["cc", "--version"], ["gcc", "--version"]]
 detect_extensions = ["c", "h", "cc", "cpp", "hh", "hpp"]
 format = '[$symbol$version ]($style)'
 symbol = " "
@@ -56,7 +57,7 @@ disabled = true
 [cmd_duration]
 disabled = false
 format = '[󰔚 $duration]($style) '
-show_notifications = true
+show_notifications = false
 
 [conda]
 disabled = true
@@ -352,10 +353,10 @@ symbol = "🅢 "
 disabled = false
 format = '[($symbol $status )($common_meaning )($signal_name )]($style)'
 map_symbol = true
-not_executable_symbol = ""
-not_found_symbol = ""
-sigint_symbol = ""
-symbol = ""
+not_executable_symbol = ""
+not_found_symbol = ""
+sigint_symbol = "󱐋"
+symbol = ""
 
 [sudo]
 disabled = true
