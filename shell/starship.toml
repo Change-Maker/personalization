@@ -1,3 +1,5 @@
+# Starship version: v1.17.1
+
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
@@ -13,6 +15,7 @@ format = """
 ($cmake)\
 ($python)\
 ($nodejs)\
+($rust)\
 ($git_branch)($git_commit)($git_state)($git_status)\
 ($hg_branch)\
 \n)\
@@ -89,6 +92,9 @@ repo_root_style = "bold cyan"
 truncate_to_repo = false
 truncation_length = 0
 
+[direnv]
+disabled = true
+
 [docker_context]
 disabled = false
 symbol = " "
@@ -120,6 +126,9 @@ disabled = true
 [fossil_branch]
 disabled = true
 symbol = " "
+
+[fossil_metrics]
+disabled = true
 
 [gcloud]
 disabled = true
@@ -188,7 +197,7 @@ symbol = " "
 disabled = false
 format = '\[[$symbol$number]($style)\]'
 style = "blue"
-symbol = "󰫢"
+symbol = "󰑮"
 
 [julia]
 disabled = true
@@ -230,7 +239,7 @@ symbol = " "
 [nodejs]
 detect_extensions = ["jsx", "ts", "tsx", "mjs", "mts", "cjs", "cts"]
 format = '[$symbol$version ]($style)'
-symbol = " "
+symbol = "󰎙 "
 
 [ocaml]
 disabled = true
@@ -307,8 +316,8 @@ disabled = true
 
 [python]
 disabled = false
-format = '[$symbol$version (\($virtualenv\) )]($style)'
-symbol = "󰌠 "
+format = '[$symbol](yellow)[$version (\($virtualenv\) )]($style)'
+symbol = " "
 
 [rlang]
 disabled = true
@@ -325,8 +334,9 @@ disabled = true
 symbol = " "
 
 [rust]
-disabled = true
-symbol = " "
+disabled = false
+format = '[$symbol](red)[$version ]($style)'
+symbol = "󱘗 "
 
 [scala]
 disabled = true
@@ -368,6 +378,9 @@ disabled = true
 disabled = true
 
 [time]
+disabled = true
+
+[typst]
 disabled = true
 
 [username]
