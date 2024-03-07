@@ -111,9 +111,6 @@ symbol = " "
 disabled = true
 symbol = " "
 
-[env_var]
-disabled = true
-
 [erlang]
 disabled = true
 
