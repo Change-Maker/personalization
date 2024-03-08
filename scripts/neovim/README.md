@@ -1,4 +1,4 @@
-# Neovim Customization
+# Neovim Personalization
 
 ![overview](https://user-images.githubusercontent.com/18575008/253444992-bdba7261-98ff-49e3-b9d7-d4ace6dff1c0.png)
 
@@ -19,7 +19,7 @@
 - Nerd Fonts >= 2.3 if using nvim-web-devicons, bufferline.
 - Git if using lualine, gitsigns.
 
-## Run Customization
+## Run Script
 
 - Bash, Zsh
 
@@ -37,7 +37,7 @@
 
 - `-h, --help`: Show help messages.
 - `-nc, --no-color`: Disable color on log messages.
-- `-y, --yes`: Accept all customization options.
+- `-y, --yes`: Accept all options.
 
 To show help messages:
 
@@ -53,7 +53,7 @@ To show help messages:
   bash (curl -fsSL URL | psub) -h
   ```
 
-### Customization Options
+### Personalization Options
 
 ```text
 [Configuration of Neovim]
@@ -106,7 +106,7 @@ To show help messages:
 
 ## Usage
 
-A full customization (answer "yes" to every customization options) has the following features:
+A full personalization (answer "yes" to every personalization options) has the following features:
 
 ### Neovim
 
@@ -247,7 +247,7 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
 
 - [x] Convert configuration from Vim script to lua.
 - [ ] Verify Neovim carefully.
-- [ ] Check Neovim version before customization.
+- [ ] Check Neovim version before personalizing.
 - [ ] Setup [todo-comments](https://github.com/folke/todo-comments.nvim) plugin.
 - [ ] Setup [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) plugin.
 - [ ] Setup [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) plugin.
