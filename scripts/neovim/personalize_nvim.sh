@@ -132,7 +132,7 @@ declare -A nvim_plugin=()
 
 
 function show_help() {
-  echo "Usage: ./customize_neovim.sh [<opts>]"
+  echo "Usage: ./personalize_nvim.sh [<opts>]"
   echo "Options:"
   echo "    -h, --help"
   echo "        Show help messages."
