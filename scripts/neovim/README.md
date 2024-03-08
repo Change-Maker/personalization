@@ -24,13 +24,13 @@
 - Bash, Zsh
 
   ```bash
-  bash <(curl -fsSL 'https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/customize_neovim.sh')
+  bash <(curl -fsSL 'https://raw.githubusercontent.com/Change-Maker/personalization/main/scripts/neovim/personalize_nvim.sh')
   ```
 
 - Fish
 
   ```fish
-  bash (curl -fsSL 'https://raw.githubusercontent.com/Change-Maker/customization/main/neovim/customize_neovim.sh' | psub)
+  bash (curl -fsSL 'https://raw.githubusercontent.com/Change-Maker/personalization/main/scripts/neovim/personalize_nvim.sh' | psub)
   ```
 
 ### Script Arguments
