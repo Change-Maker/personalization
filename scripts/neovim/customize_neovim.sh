@@ -72,7 +72,7 @@ readonly INDENT_BLANKLINE='indent-blankline'
 readonly HOP='hop'
 readonly WHICHKEY='which-key'
 readonly COMMENT='comment'
-# TODO: The following plugins are not added into customization.
+# TODO: Add the following plugins.
 readonly TODO_COMMENTS='todo-comments'
 readonly TOGGLETERM='toggleterm'
 
@@ -139,7 +139,7 @@ function show_help() {
   echo "    -nc, --no-color"
   echo "        Disable color on log messages."
   echo "    -y, --yes"
-  echo "        Accept all customization options."
+  echo "        Accept all options."
   echo
 }
 
@@ -258,9 +258,9 @@ function get_latest_release() {
 
 function confirm_sudo() {
   echo
-  if confirm "Would you like to accept using sudo in this customization?" true; then
+  if confirm "Would you like to accept using sudo during personalizing?" true; then
     if ! command -v sudo &> /dev/null; then
-      log "Please install and setup sudo first if you accept using sudo in this customization" "ERROR"
+      log "Please install and setup sudo first if you accept using sudo during personalizing." "ERROR"
       exit 1
     fi
     use_sudo=true
@@ -538,7 +538,7 @@ function confirm_nvim_plugin_installer() {
 
 
 function confirm_continue() {
-  local title="This customization will do the following things:"
+  local title="This script will do the following things:"
   echo
   if [ "$disable_color" = true ]; then
     echo "$title"
@@ -595,7 +595,7 @@ function confirm_continue() {
     echo "  - Add '$XDG_BIN_HOME' into PATH environment variable."
   fi
 
-  if ! confirm_without_default "Would you like to run this customization?"; then
+  if ! confirm_without_default "Would you like to continue?"; then
     exit 0
   fi
 }

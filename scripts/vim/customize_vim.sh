@@ -142,7 +142,7 @@ function verify_vim() {
         need_upgrade_vim=true
         echo
         echo -n "[WARNING] The Vim version is not greater than 8.0."
-        echo " This customization will try to upgrade your Vim to the latest version."
+        echo " This process will try to upgrade your Vim to the latest version."
       fi
     fi
   fi
@@ -949,9 +949,9 @@ function show_comments() {
 function run() {
   init
 
-  # Show what will this customization do to user.
+  # Show what will this process do to user.
   echo
-  echo "This customization will do the following things:"
+  echo "This process will do the following things:"
   if [ "${#dependencies[@]}" -ne 0 ]; then
     echo "  - Install dependencies: ${dependencies[*]}"
   fi
@@ -978,8 +978,8 @@ function run() {
     echo "  - Install Vim plugins: ${vim_plugins[*]}"
   fi
 
-  # Confirm if user want to run this customization.
-  if confirm_exactly "Would you like to run this customization?"; then
+  # Confirm if user want to run this process.
+  if confirm_exactly "Would you like to continue?"; then
     # Install dependencies.
     install_dependencies
 
