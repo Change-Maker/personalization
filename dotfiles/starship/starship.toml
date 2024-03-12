@@ -332,7 +332,8 @@ symbol = " "
 
 [rust]
 disabled = false
-format = '[$symbol](red)[$version ]($style)'
+format = '[$symbol](#FF7043)[$version ]($style)'
+style = 'bold #FF7043'
 symbol = "󱘗 "
 
 [scala]
