@@ -192,11 +192,11 @@ The configuration of plugins is written in `$HOME/.config/nvim/plugin_settings.l
     - `l`: Open/Edit file at current cursor line.
     - `s`: Open in split horizontally.
     - `v`: Open in split vertically.
-    - `y`: Copy.
+    - `c`: Copy.
     - `x`: Cut.
     - `p`: Paste.
     - `d`: Delete.
-    - `c`: Copy name.
+    - `y`: Copy name.
     - `?`: Open NvimTree help window.
 
   ![nvim-tree](https://user-images.githubusercontent.com/18575008/253169773-6b0c1ac0-3723-4f97-857b-553780058667.png)
